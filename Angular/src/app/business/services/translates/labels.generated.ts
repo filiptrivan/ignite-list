@@ -38,6 +38,16 @@ export class TranslateLabelsGeneratedService {
                 return this.translocoService.translate('DisplayName');
             case 'isLeaf':
                 return this.translocoService.translate('IsLeaf');
+            case 'logoBlobNameData':
+                return this.translocoService.translate('LogoBlobNameData');
+            case 'logoBlobName':
+                return this.translocoService.translate('LogoBlobName');
+            case 'link':
+                return this.translocoService.translate('Link');
+            case 'description':
+                return this.translocoService.translate('Description');
+            case 'companyDTO':
+                return this.translocoService.translate('CompanyDTO');
             case 'additionalColumnHeaders':
                 return this.translocoService.translate('AdditionalColumnHeaders');
             case 'additionalDataStartColumn':
@@ -70,8 +80,6 @@ export class TranslateLabelsGeneratedService {
                 return this.translocoService.translate('IsMarkedAsRead');
             case 'title':
                 return this.translocoService.translate('Title');
-            case 'description':
-                return this.translocoService.translate('Description');
             case 'emailBody':
                 return this.translocoService.translate('EmailBody');
             case 'notificationDTO':

@@ -15,6 +15,19 @@ export class ValidatorServiceGenerated {
 
     setValidator = (formControl: SpiderlyFormControl, className: string): SpiderlyValidatorFn => {
         switch(formControl.label + className){
+            case 'nameCompany':
+                return this.nameCompanyValidator(formControl);
+            case 'linkCompany':
+                return this.linkCompanyValidator(formControl);
+            case 'descriptionCompany':
+                return this.descriptionCompanyValidator(formControl);
+            case 'versionCompany':
+                return this.versionCompanyValidator(formControl);
+            case 'createdAtCompany':
+                return this.createdAtCompanyValidator(formControl);
+            case 'modifiedAtCompany':
+                return this.modifiedAtCompanyValidator(formControl);
+
             case 'emailLogin':
                 return this.emailLoginValidator(formControl);
 
@@ -74,6 +87,114 @@ export class ValidatorServiceGenerated {
                 return null;
         }
     }
+
+    nameCompanyValidator = (control: SpiderlyFormControl): SpiderlyValidatorFn => {
+        const validator: SpiderlyValidatorFn = (): ValidationErrors | null => {
+            const value = control.value;
+
+            const notEmptyRule = typeof value !== 'undefined' && value !== null && value !== '';
+            const min = 1;
+            const max = 75;
+            const stringLengthRule = (value?.length >= min && value?.length <= max) || (typeof value === 'undefined' || value === null || value === '');
+
+            const valid = notEmptyRule && stringLengthRule;
+
+            return valid ? null : { _ : this.translocoService.translate('NotEmptyLength', {min, max}) };
+        };
+        validator.hasNotEmptyRule = true;
+        control.required = true;
+        control.validator = validator;
+
+        return validator;
+    }
+
+    linkCompanyValidator = (control: SpiderlyFormControl): SpiderlyValidatorFn => {
+        const validator: SpiderlyValidatorFn = (): ValidationErrors | null => {
+            const value = control.value;
+
+            const min = 1;
+            const max = 100;
+            const stringLengthRule = (value?.length >= min && value?.length <= max) || (typeof value === 'undefined' || value === null || value === '');
+
+            const valid = stringLengthRule;
+
+            return valid ? null : { _ : this.translocoService.translate('Length', {min, max}) };
+        };
+
+        control.validator = validator;
+
+        return validator;
+    }
+
+    descriptionCompanyValidator = (control: SpiderlyFormControl): SpiderlyValidatorFn => {
+        const validator: SpiderlyValidatorFn = (): ValidationErrors | null => {
+            const value = control.value;
+
+            const min = 1;
+            const max = 500;
+            const stringLengthRule = (value?.length >= min && value?.length <= max) || (typeof value === 'undefined' || value === null || value === '');
+
+            const valid = stringLengthRule;
+
+            return valid ? null : { _ : this.translocoService.translate('Length', {min, max}) };
+        };
+
+        control.validator = validator;
+
+        return validator;
+    }
+
+    versionCompanyValidator = (control: SpiderlyFormControl): SpiderlyValidatorFn => {
+        const validator: SpiderlyValidatorFn = (): ValidationErrors | null => {
+            const value = control.value;
+
+            const notEmptyRule = typeof value !== 'undefined' && value !== null && value !== '';
+
+            const valid = notEmptyRule;
+
+            return valid ? null : { _ : this.translocoService.translate('NotEmpty', {}) };
+        };
+        validator.hasNotEmptyRule = true;
+        control.required = true;
+        control.validator = validator;
+
+        return validator;
+    }
+
+    createdAtCompanyValidator = (control: SpiderlyFormControl): SpiderlyValidatorFn => {
+        const validator: SpiderlyValidatorFn = (): ValidationErrors | null => {
+            const value = control.value;
+
+            const notEmptyRule = typeof value !== 'undefined' && value !== null && value !== '';
+
+            const valid = notEmptyRule;
+
+            return valid ? null : { _ : this.translocoService.translate('NotEmpty', {}) };
+        };
+        validator.hasNotEmptyRule = true;
+        control.required = true;
+        control.validator = validator;
+        control.updateValueAndValidity(); // FT: It's necessary only for Date Angular type
+        return validator;
+    }
+
+    modifiedAtCompanyValidator = (control: SpiderlyFormControl): SpiderlyValidatorFn => {
+        const validator: SpiderlyValidatorFn = (): ValidationErrors | null => {
+            const value = control.value;
+
+            const notEmptyRule = typeof value !== 'undefined' && value !== null && value !== '';
+
+            const valid = notEmptyRule;
+
+            return valid ? null : { _ : this.translocoService.translate('NotEmpty', {}) };
+        };
+        validator.hasNotEmptyRule = true;
+        control.required = true;
+        control.validator = validator;
+        control.updateValueAndValidity(); // FT: It's necessary only for Date Angular type
+        return validator;
+    }
+
 
     emailLoginValidator = (control: SpiderlyFormControl): SpiderlyValidatorFn => {
         const validator: SpiderlyValidatorFn = (): ValidationErrors | null => {

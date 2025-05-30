@@ -24,6 +24,12 @@ export class TranslateClassNamesGeneratedService {
                 return this.translocoService.translate('BusinessObjectNamebook');
             case 'Codebook':
                 return this.translocoService.translate('Codebook');
+            case 'Company':
+                return this.translocoService.translate('Company');
+            case 'CompanyMainUIForm':
+                return this.translocoService.translate('CompanyMainUIForm');
+            case 'CompanySaveBody':
+                return this.translocoService.translate('CompanySaveBody');
             case 'ExcelReportOptions':
                 return this.translocoService.translate('ExcelReportOptions');
             case 'ExternalProvider':

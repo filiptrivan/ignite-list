@@ -11,7 +11,230 @@ import { combineLatest, firstValueFrom, forkJoin, map, Observable, of, Subscript
 import { MenuItem } from 'primeng/api';
 import { AuthService } from '../../services/auth/auth.service';
 import { PrimengModule, SpiderlyControlsModule, CardSkeletonComponent, IndexCardComponent, IsAuthorizedForSaveEvent, SpiderlyDataTableComponent, SpiderlyFormArray, BaseEntity, LastMenuIconIndexClicked, SpiderlyFormGroup, SpiderlyButton, nameof, BaseFormService, getControl, Column, TableFilter, LazyLoadSelectedIdsResult, AllClickEvent, SpiderlyFileSelectEvent, getPrimengDropdownNamebookOptions, PrimengOption, SpiderlyFormControl, getPrimengAutocompleteNamebookOptions } from 'spiderly';
-import { Notification, NotificationSaveBody, UserExtended, UserNotification, UserExtendedSaveBody, UserNotificationSaveBody } from '../../entities/business-entities.generated';
+import { Notification, NotificationSaveBody, Company, UserExtended, UserNotification, CompanySaveBody, UserExtendedSaveBody, UserNotificationSaveBody } from '../../entities/business-entities.generated';
+
+@Component({
+    selector: 'company-base-details',
+    template: `
+<ng-container *transloco="let t">
+    <spiderly-panel [isFirstMultiplePanel]="isFirstMultiplePanel" [isMiddleMultiplePanel]="isMiddleMultiplePanel" [isLastMultiplePanel]="isLastMultiplePanel" [showPanelHeader]="showPanelHeader" >
+        <panel-header [title]="panelTitle" [icon]="panelIcon"></panel-header>
+
+        <panel-body>
+            @defer (when loading === false) {
+                <form class="grid">
+                    <ng-content select="[BEFORE]"></ng-content>
+                    <div *ngIf="showLogoBlobNameForCompany" class="col-12">
+                        <spiderly-file [control]="control('logoBlobName', companyFormGroup)" [fileData]="companyFormGroup.controls.logoBlobNameData.getRawValue()" [objectId]="companyFormGroup.controls.id.getRawValue()" (onFileSelected)="uploadLogoBlobNameForCompany($event)" [disabled]="!isAuthorizedForSave"></spiderly-file>
+                    </div>
+                    <div *ngIf="showNameForCompany" class="col-12 md:col-6">
+                        <spiderly-textbox [control]="control('name', companyFormGroup)"></spiderly-textbox>
+                    </div>
+                    <div *ngIf="showLinkForCompany" class="col-12 md:col-6">
+                        <spiderly-textbox [control]="control('link', companyFormGroup)"></spiderly-textbox>
+                    </div>
+                    <div *ngIf="showDescriptionForCompany" class="col-12">
+                        <spiderly-textarea [control]="control('description', companyFormGroup)"></spiderly-textarea>
+                    </div>
+                    <ng-content select="[AFTER]"></ng-content>
+                </form>
+            } @placeholder {
+                <card-skeleton [height]="502"></card-skeleton>
+            }
+        </panel-body>
+
+        <panel-footer>
+            <spiderly-button [disabled]="!isAuthorizedForSave" (onClick)="save()" [label]="t('Save')" icon="pi pi-save"></spiderly-button>
+            @for (button of additionalButtons; track button.label) {
+                <spiderly-button (onClick)="button.onClick()" [disabled]="button.disabled" [label]="button.label" [icon]="button.icon"></spiderly-button>
+            }
+            <return-button *ngIf="showReturnButton" ></return-button>
+        </panel-footer>
+    </spiderly-panel>
+</ng-container>
+    `,
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        PrimengModule,
+        SpiderlyControlsModule,
+        TranslocoDirective,
+        CardSkeletonComponent,
+        IndexCardComponent,
+        SpiderlyDataTableComponent,
+    ]
+})
+export class CompanyBaseDetailsComponent {
+    @Output() onSave = new EventEmitter<void>();
+    @Output() onCompanyFormGroupInitFinish = new EventEmitter<void>();
+    @Input() getCrudMenuForOrderedData: (formArray: SpiderlyFormArray, modelConstructor: BaseEntity, lastMenuIconIndexClicked: LastMenuIconIndexClicked, adjustFormArrayManually: boolean) => MenuItem[];
+    @Input() formGroup: SpiderlyFormGroup;
+    @Input() companyFormGroup: SpiderlyFormGroup<Company>;
+    @Input() additionalButtons: SpiderlyButton[] = [];
+    @Input() isFirstMultiplePanel: boolean = false;
+    @Input() isMiddleMultiplePanel: boolean = false;
+    @Input() isLastMultiplePanel: boolean = false;
+    @Input() showPanelHeader: boolean = true;
+    @Input() panelTitle: string;
+    @Input() panelIcon: string;
+    @Input() showReturnButton: boolean = true;
+    authorizationForSaveSubscription: Subscription;
+    @Input() authorizedForSaveObservable: () => Observable<boolean> = () => of(true);
+    isAuthorizedForSave: boolean = true;
+    @Output() onIsAuthorizedForSaveChange = new EventEmitter<IsAuthorizedForSaveEvent>(); 
+
+    modelId: number;
+    loading: boolean = true;
+
+    companySaveBodyName: string = nameof<CompanySaveBody>('companyDTO');
+
+
+
+
+
+
+
+
+
+    @Input() showLogoBlobNameForCompany: boolean = true;
+    @Input() showNameForCompany: boolean = true;
+    @Input() showLinkForCompany: boolean = true;
+    @Input() showDescriptionForCompany: boolean = true;
+
+
+    constructor(
+        private apiService: ApiService,
+        private route: ActivatedRoute,
+        private baseFormService: BaseFormService,
+        private validatorService: ValidatorService,
+        private translateLabelsService: TranslateLabelsService,
+        private translocoService: TranslocoService,
+        private authService: AuthService,
+    ) {}
+
+    ngOnInit(){
+        this.formGroup.initSaveBody = () => { 
+            let saveBody = new CompanySaveBody();
+            saveBody.companyDTO = this.companyFormGroup.getRawValue();
+
+
+
+
+            return saveBody;
+        }
+
+        this.formGroup.saveObservableMethod = this.apiService.saveCompany;
+        this.formGroup.mainDTOName = this.companySaveBodyName;
+
+        this.route.params.subscribe(async (params) => {
+            this.modelId = params['id'];
+
+
+
+
+            if(this.modelId > 0){
+                forkJoin({
+                    mainUIFormDTO: this.apiService.getCompanyMainUIFormDTO(this.modelId),
+                })
+                .subscribe(({ mainUIFormDTO }) => {
+                    this.initCompanyFormGroup(new Company(mainUIFormDTO.companyDTO));
+
+
+
+                    this.authorizationForSaveSubscription = this.handleAuthorizationForSave().subscribe();
+                    this.loading = false;
+                });
+            }
+            else{
+                this.initCompanyFormGroup(new Company({id: 0}));
+
+                this.authorizationForSaveSubscription = this.handleAuthorizationForSave().subscribe();
+                this.loading = false;
+            }
+        });
+    }
+
+    initCompanyFormGroup(company: Company) {
+        this.baseFormService.addFormGroup<Company>(
+            this.companyFormGroup, 
+            this.formGroup, 
+            company, 
+            this.companySaveBodyName,
+            []
+        );
+        this.companyFormGroup.mainDTOName = this.companySaveBodyName;
+
+        this.onCompanyFormGroupInitFinish.next();
+    }
+
+    handleAuthorizationForSave = () => {
+        return combineLatest([this.authService.currentUserPermissionCodes$, this.authorizedForSaveObservable()]).pipe(
+            map(([currentUserPermissionCodes, isAuthorizedForSave]) => {
+                if (currentUserPermissionCodes != null && isAuthorizedForSave != null) {
+                    this.isAuthorizedForSave =
+
+                        (currentUserPermissionCodes.includes('InsertCompany') && this.modelId <= 0) || 
+                        (currentUserPermissionCodes.includes('UpdateCompany') && this.modelId > 0) ||
+                        isAuthorizedForSave;
+
+                    if (this.isAuthorizedForSave) { 
+                        this.companyFormGroup.controls.logoBlobName.enable();
+                        this.companyFormGroup.controls.name.enable();
+                        this.companyFormGroup.controls.link.enable();
+                        this.companyFormGroup.controls.description.enable();
+
+                    }
+                    else{
+                        this.companyFormGroup.controls.logoBlobName.disable();
+                        this.companyFormGroup.controls.name.disable();
+                        this.companyFormGroup.controls.link.disable();
+                        this.companyFormGroup.controls.description.disable();
+
+                    }
+
+                    this.onIsAuthorizedForSaveChange.next(new IsAuthorizedForSaveEvent({
+                        isAuthorizedForSave: this.isAuthorizedForSave, 
+                        currentUserPermissionCodes: currentUserPermissionCodes
+                    })); 
+                }
+            })
+        );
+    }
+
+
+
+
+
+
+
+
+
+    uploadLogoBlobNameForCompany(event: SpiderlyFileSelectEvent){
+        this.apiService.uploadLogoBlobNameForCompany(event.formData).subscribe((completeFileName: string) => {
+            this.companyFormGroup.controls.logoBlobName.setValue(completeFileName);
+        });
+    }
+
+    control(formControlName: string, formGroup: SpiderlyFormGroup){
+        return getControl(formControlName, formGroup);
+    }
+
+    getFormArrayGroups<T>(formArray: SpiderlyFormArray): SpiderlyFormGroup<T>[]{
+        return this.baseFormService.getFormArrayGroups<T>(formArray);
+    }
+
+    save(){
+        this.onSave.next();
+    }
+
+	ngOnDestroy(){
+        if (this.authorizationForSaveSubscription) {
+            this.authorizationForSaveSubscription.unsubscribe();
+        }
+    }
+
+}
 
 @Component({
     selector: 'notification-base-details',

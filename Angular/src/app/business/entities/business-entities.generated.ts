@@ -2,6 +2,92 @@ import { BaseEntity, TableFilter, TableFilterContext, TableFilterSortMeta, MimeT
 
 
 
+export class Company extends BaseEntity
+{
+    logoBlobNameData?: string;
+	logoBlobName?: string;
+	name?: string;
+	link?: string;
+	description?: string;
+	version?: number;
+	id?: number;
+	createdAt?: Date;
+	modifiedAt?: Date;
+
+    constructor(
+    {
+        logoBlobNameData,
+		logoBlobName,
+		name,
+		link,
+		description,
+		version,
+		id,
+		createdAt,
+		modifiedAt
+    }:{
+        logoBlobNameData?: string;
+		logoBlobName?: string;
+		name?: string;
+		link?: string;
+		description?: string;
+		version?: number;
+		id?: number;
+		createdAt?: Date;
+		modifiedAt?: Date;     
+    } = {}
+    ) {
+        super('Company'); 
+
+        this.logoBlobNameData = logoBlobNameData;
+		this.logoBlobName = logoBlobName;
+		this.name = name;
+		this.link = link;
+		this.description = description;
+		this.version = version;
+		this.id = id;
+		this.createdAt = createdAt;
+		this.modifiedAt = modifiedAt;
+    }
+}
+
+
+export class CompanySaveBody extends BaseEntity
+{
+    companyDTO?: Company;
+
+    constructor(
+    {
+        companyDTO
+    }:{
+        companyDTO?: Company;     
+    } = {}
+    ) {
+        super('CompanySaveBody'); 
+
+        this.companyDTO = companyDTO;
+    }
+}
+
+
+export class CompanyMainUIForm extends BaseEntity
+{
+    companyDTO?: Company;
+
+    constructor(
+    {
+        companyDTO
+    }:{
+        companyDTO?: Company;     
+    } = {}
+    ) {
+        super('CompanyMainUIForm'); 
+
+        this.companyDTO = companyDTO;
+    }
+}
+
+
 export class Notification extends BaseEntity
 {
     title?: string;

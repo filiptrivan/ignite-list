@@ -1,7 +1,11 @@
 
 export enum BusinessPermissionCodes
 {
-    ReadNotification = "ReadNotification",
+    ReadCompany = "ReadCompany",
+	UpdateCompany = "UpdateCompany",
+	InsertCompany = "InsertCompany",
+	DeleteCompany = "DeleteCompany",
+	ReadNotification = "ReadNotification",
 	UpdateNotification = "UpdateNotification",
 	InsertNotification = "InsertNotification",
 	DeleteNotification = "DeleteNotification",

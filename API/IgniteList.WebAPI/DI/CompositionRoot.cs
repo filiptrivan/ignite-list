@@ -26,7 +26,7 @@ namespace IgniteList.WebAPI.DI
             registry.Register<Spiderly.Security.Services.AuthorizationBusinessServiceGenerated<UserExtended>>();
             registry.Register<ExcelService>();
             registry.Register<EmailingService>();
-            registry.Register<IFileManager, DiskStorageService>();
+            registry.Register<IFileManager, BlobStorageService>();
             registry.RegisterSingleton<IConfigureOptions<MvcOptions>, TranslatePropertiesConfiguration>();
             registry.RegisterSingleton<IJwtAuthManager, JwtAuthManagerService>();
 

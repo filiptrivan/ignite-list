@@ -3,7 +3,7 @@ export const environment = {
   production: false,
   apiUrl: 'https://localhost:44388/api',
   frontendUrl: 'http://localhost:4200',
-  GoogleClientId: 'xxxxxxxxxxx-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.apps.googleusercontent.com',
+  GoogleClientId: '997916186195-4hk7brksr6jju869o4d0pb87gc6tvkdc.apps.googleusercontent.com',
   companyName: 'Ignitelist',
   primaryColor: '',
 };

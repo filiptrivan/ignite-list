@@ -5,6 +5,9 @@ import { ApiSecurityService, TableFilter, TableResponse, Namebook, Codebook, Laz
 import { ConfigService } from '../config.service';
 import { Notification } from '../../entities/business-entities.generated';
 import { NotificationSaveBody } from '../../entities/business-entities.generated';
+import { Company } from '../../entities/business-entities.generated';
+import { CompanySaveBody } from '../../entities/business-entities.generated';
+import { CompanyMainUIForm } from '../../entities/business-entities.generated';
 import { NotificationMainUIForm } from '../../entities/business-entities.generated';
 import { UserExtended } from '../../entities/business-entities.generated';
 import { UserExtendedSaveBody } from '../../entities/business-entities.generated';
@@ -134,6 +137,47 @@ export class ApiGeneratedService extends ApiSecurityService {
 
     deleteUserExtended = (id: number): Observable<any> => { 
         return this.http.delete(`${this.config.apiUrl}/UserExtended/DeleteUserExtended?id=${id}`, this.config.httpOptions);
+    }
+
+
+    getCompanyTableData = (tableFilterDTO: TableFilter): Observable<TableResponse<Company>> => { 
+        return this.http.post<TableResponse<Company>>(`${this.config.apiUrl}/Company/GetCompanyTableData`, tableFilterDTO, this.config.httpSkipSpinnerOptions);
+    }
+
+    exportCompanyTableDataToExcel = (tableFilterDTO: TableFilter): Observable<any> => { 
+        return this.http.post(`${this.config.apiUrl}/Company/ExportCompanyTableDataToExcel`, tableFilterDTO, { observe: 'response', responseType: 'blob' });
+    }
+
+    getCompanyList = (): Observable<Company[]> => { 
+        return this.http.get<Company[]>(`${this.config.apiUrl}/Company/GetCompanyList`, this.config.httpOptions);
+    }
+
+    getCompanyMainUIFormDTO = (id: number): Observable<CompanyMainUIForm> => { 
+        return this.http.get<CompanyMainUIForm>(`${this.config.apiUrl}/Company/GetCompanyMainUIFormDTO?id=${id}`, this.config.httpOptions);
+    }
+
+    getCompany = (id: number): Observable<Company> => { 
+        return this.http.get<Company>(`${this.config.apiUrl}/Company/GetCompany?id=${id}`, this.config.httpOptions);
+    }
+
+
+
+
+
+
+
+
+
+    saveCompany = (saveBodyDTO: CompanySaveBody): Observable<CompanySaveBody> => { 
+        return this.http.put<CompanySaveBody>(`${this.config.apiUrl}/Company/SaveCompany`, saveBodyDTO, this.config.httpOptions);
+    }
+
+    uploadLogoBlobNameForCompany = (file: any): Observable<string> => { 
+        return this.http.post(`${this.config.apiUrl}/Company/UploadLogoBlobNameForCompany`, file, { ...this.config.httpOptions, responseType: 'text' });
+    }
+
+    deleteCompany = (id: number): Observable<any> => { 
+        return this.http.delete(`${this.config.apiUrl}/Company/DeleteCompany?id=${id}`, this.config.httpOptions);
     }
 
 

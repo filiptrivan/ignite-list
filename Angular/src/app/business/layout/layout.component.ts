@@ -50,6 +50,12 @@ export class LayoutComponent extends LayoutBaseComponent implements OnInit, OnDe
                         routerLink: [''],
                         visible: true,
                     },
+                    { 
+                        label: this.translocoService.translate('Company'), 
+                        icon: 'pi pi-fw pi-home', 
+                        routerLink: ['companies'],
+                        visible: true,
+                    },
                     {
                         label: this.translocoService.translate('Administration'),
                         icon: 'pi pi-fw pi-cog',

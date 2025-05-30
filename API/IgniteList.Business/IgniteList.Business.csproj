@@ -15,7 +15,6 @@
     <Folder Include="DataMappers\" />
     <Folder Include="DTO\Helpers" />
     <Folder Include="DTO\Partials" />
-    <Folder Include="Entities\" />
     <Folder Include="Enums\" />
     <Folder Include="Services\" />
     <Folder Include="ValidationRules\" />
