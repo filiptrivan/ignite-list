@@ -17,6 +17,7 @@ using Mapster;
 using FluentValidation;
 using Spiderly.Shared.Emailing;
 using Azure.Storage.Blobs;
+using Spiderly.Shared.Attributes.EF;
 
 namespace IgniteList.Business.Services
 {

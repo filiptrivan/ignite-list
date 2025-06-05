@@ -3,17 +3,17 @@ import { ChangeDetectorRef, Component, KeyValueDiffers, OnInit } from '@angular/
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslocoService } from '@jsverse/transloco';
 import { ApiService } from 'src/app/business/services/api/api.service';
-import { Company } from 'src/app/business/entities/business-entities.generated';
+import { Category } from 'src/app/business/entities/business-entities.generated';
 import { BaseFormCopy, SpiderlyFormGroup, SpiderlyMessageService, BaseFormService } from 'spiderly';
 
 @Component({
-    selector: 'company-details',
-    templateUrl: './company-details.component.html',
+    selector: 'category-details',
+    templateUrl: './category-details.component.html',
     styles: [],
     standalone: false
 })
-export class CompanyDetailsComponent extends BaseFormCopy implements OnInit {
-    companyFormGroup = new SpiderlyFormGroup<Company>({});
+export class CategoryDetailsComponent extends BaseFormCopy implements OnInit {
+    categoryFormGroup = new SpiderlyFormGroup<Category>({});
 
     constructor(
         protected override differs: KeyValueDiffers,

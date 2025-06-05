@@ -18,7 +18,12 @@ export const routes: Routes = [
             },
             {
                 path: '',
-                loadChildren: () => import('./features/company/company.module').then(m => m.CompanyModule),
+                loadChildren: () => import('./features/project/project.module').then(m => m.ProjectModule),
+                canActivate: [AuthGuard]
+            },
+            {
+                path: '',
+                loadChildren: () => import('./features/category/category.module').then(m => m.CategoryModule),
                 canActivate: [AuthGuard]
             },
             { 

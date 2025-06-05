@@ -22,14 +22,14 @@ export class TranslateClassNamesGeneratedService {
                 return this.translocoService.translate('BusinessObject');
             case 'BusinessObjectNamebook':
                 return this.translocoService.translate('BusinessObjectNamebook');
+            case 'Category':
+                return this.translocoService.translate('Category');
+            case 'CategoryMainUIForm':
+                return this.translocoService.translate('CategoryMainUIForm');
+            case 'CategorySaveBody':
+                return this.translocoService.translate('CategorySaveBody');
             case 'Codebook':
                 return this.translocoService.translate('Codebook');
-            case 'Company':
-                return this.translocoService.translate('Company');
-            case 'CompanyMainUIForm':
-                return this.translocoService.translate('CompanyMainUIForm');
-            case 'CompanySaveBody':
-                return this.translocoService.translate('CompanySaveBody');
             case 'ExcelReportOptions':
                 return this.translocoService.translate('ExcelReportOptions');
             case 'ExternalProvider':
@@ -58,6 +58,12 @@ export class TranslateClassNamesGeneratedService {
                 return this.translocoService.translate('PermissionMainUIForm');
             case 'PermissionSaveBody':
                 return this.translocoService.translate('PermissionSaveBody');
+            case 'Project':
+                return this.translocoService.translate('Project');
+            case 'ProjectMainUIForm':
+                return this.translocoService.translate('ProjectMainUIForm');
+            case 'ProjectSaveBody':
+                return this.translocoService.translate('ProjectSaveBody');
             case 'ReadonlyObject':
                 return this.translocoService.translate('ReadonlyObject');
             case 'RefreshToken':
@@ -92,6 +98,12 @@ export class TranslateClassNamesGeneratedService {
                 return this.translocoService.translate('TableFilterSortMeta');
             case 'TableResponse':
                 return this.translocoService.translate('TableResponse');
+            case 'Upvote':
+                return this.translocoService.translate('Upvote');
+            case 'UpvoteMainUIForm':
+                return this.translocoService.translate('UpvoteMainUIForm');
+            case 'UpvoteSaveBody':
+                return this.translocoService.translate('UpvoteSaveBody');
             case 'User':
                 return this.translocoService.translate('User');
             case 'UserExtended':

@@ -34,20 +34,12 @@ export class TranslateLabelsGeneratedService {
                 return this.translocoService.translate('CreatedAt');
             case 'modifiedAt':
                 return this.translocoService.translate('ModifiedAt');
+            case 'categoryDTO':
+                return this.translocoService.translate('CategoryDTO');
             case 'displayName':
                 return this.translocoService.translate('DisplayName');
             case 'isLeaf':
                 return this.translocoService.translate('IsLeaf');
-            case 'logoBlobNameData':
-                return this.translocoService.translate('LogoBlobNameData');
-            case 'logoBlobName':
-                return this.translocoService.translate('LogoBlobName');
-            case 'link':
-                return this.translocoService.translate('Link');
-            case 'description':
-                return this.translocoService.translate('Description');
-            case 'companyDTO':
-                return this.translocoService.translate('CompanyDTO');
             case 'additionalColumnHeaders':
                 return this.translocoService.translate('AdditionalColumnHeaders');
             case 'additionalDataStartColumn':
@@ -80,6 +72,8 @@ export class TranslateLabelsGeneratedService {
                 return this.translocoService.translate('IsMarkedAsRead');
             case 'title':
                 return this.translocoService.translate('Title');
+            case 'description':
+                return this.translocoService.translate('Description');
             case 'emailBody':
                 return this.translocoService.translate('EmailBody');
             case 'notificationDTO':
@@ -102,6 +96,16 @@ export class TranslateLabelsGeneratedService {
                 return this.translocoService.translate('DescriptionLatin');
             case 'permissionDTO':
                 return this.translocoService.translate('PermissionDTO');
+            case 'logoBlobNameData':
+                return this.translocoService.translate('LogoBlobNameData');
+            case 'logoBlobName':
+                return this.translocoService.translate('LogoBlobName');
+            case 'projectName':
+                return this.translocoService.translate('ProjectName');
+            case 'link':
+                return this.translocoService.translate('Link');
+            case 'projectDTO':
+                return this.translocoService.translate('ProjectDTO');
             case 'ipAddress':
                 return this.translocoService.translate('IpAddress');
             case 'tokenString':
@@ -154,6 +158,12 @@ export class TranslateLabelsGeneratedService {
                 return this.translocoService.translate('Order');
             case 'data':
                 return this.translocoService.translate('Data');
+            case 'project':
+                return this.translocoService.translate('Project');
+            case 'upvoteDTO':
+                return this.translocoService.translate('UpvoteDTO');
+            case 'age':
+                return this.translocoService.translate('Age');
             case 'hasLoggedInWithExternalProvider':
                 return this.translocoService.translate('HasLoggedInWithExternalProvider');
             case 'isDisabled':

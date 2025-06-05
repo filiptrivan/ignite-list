@@ -1,21 +1,21 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { TranslocoDirective } from '@jsverse/transloco';
-import { CompanyBaseDetailsComponent, NotificationBaseDetailsComponent, UserExtendedBaseDetailsComponent } from 'src/app/business/components/base-details/business-base-details.generated';
+import { CategoryBaseDetailsComponent, NotificationBaseDetailsComponent, UserExtendedBaseDetailsComponent } from 'src/app/business/components/base-details/business-base-details.generated';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PrimengModule, SpiderlyDataTableComponent, SpiderlyControlsModule, CardSkeletonComponent, RoleBaseDetailsComponent } from 'spiderly';
-import { CompanyDetailsComponent } from './company-details.component';
-import { CompanyTableComponent } from './company-table.component';
+import { CategoryDetailsComponent } from './category-details.component';
+import { CategoryTableComponent } from './category-table.component';
 
 const routes: Routes = [
     {
-        path: 'companies',
-        component: CompanyTableComponent,
+        path: 'categories',
+        component: CategoryTableComponent,
     },
     {
-        path: 'companies/:id',
-        component: CompanyDetailsComponent,
+        path: 'categories/:id',
+        component: CategoryDetailsComponent,
     },
 ];
 
@@ -30,13 +30,13 @@ const routes: Routes = [
     SpiderlyControlsModule,
     CardSkeletonComponent,
     TranslocoDirective,
-    CompanyBaseDetailsComponent
+    CategoryBaseDetailsComponent
 ],
 declarations: [
-        CompanyTableComponent,
-        CompanyDetailsComponent,
+        CategoryTableComponent,
+        CategoryDetailsComponent,
     ],
     providers:[]
 })
-export class CompanyModule { }
+export class CategoryModule { }
 

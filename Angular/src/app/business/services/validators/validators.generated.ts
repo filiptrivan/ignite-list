@@ -15,18 +15,14 @@ export class ValidatorServiceGenerated {
 
     setValidator = (formControl: SpiderlyFormControl, className: string): SpiderlyValidatorFn => {
         switch(formControl.label + className){
-            case 'nameCompany':
-                return this.nameCompanyValidator(formControl);
-            case 'linkCompany':
-                return this.linkCompanyValidator(formControl);
-            case 'descriptionCompany':
-                return this.descriptionCompanyValidator(formControl);
-            case 'versionCompany':
-                return this.versionCompanyValidator(formControl);
-            case 'createdAtCompany':
-                return this.createdAtCompanyValidator(formControl);
-            case 'modifiedAtCompany':
-                return this.modifiedAtCompanyValidator(formControl);
+            case 'nameCategory':
+                return this.nameCategoryValidator(formControl);
+            case 'versionCategory':
+                return this.versionCategoryValidator(formControl);
+            case 'createdAtCategory':
+                return this.createdAtCategoryValidator(formControl);
+            case 'modifiedAtCategory':
+                return this.modifiedAtCategoryValidator(formControl);
 
             case 'emailLogin':
                 return this.emailLoginValidator(formControl);
@@ -55,6 +51,21 @@ export class ValidatorServiceGenerated {
             case 'codePermission':
                 return this.codePermissionValidator(formControl);
 
+            case 'projectNameProject':
+                return this.projectNameProjectValidator(formControl);
+            case 'linkProject':
+                return this.linkProjectValidator(formControl);
+            case 'descriptionProject':
+                return this.descriptionProjectValidator(formControl);
+            case 'userIdProject':
+                return this.userIdProjectValidator(formControl);
+            case 'versionProject':
+                return this.versionProjectValidator(formControl);
+            case 'createdAtProject':
+                return this.createdAtProjectValidator(formControl);
+            case 'modifiedAtProject':
+                return this.modifiedAtProjectValidator(formControl);
+
             case 'emailRegistration':
                 return this.emailRegistrationValidator(formControl);
 
@@ -71,6 +82,12 @@ export class ValidatorServiceGenerated {
 
             case 'emailUserExtended':
                 return this.emailUserExtendedValidator(formControl);
+            case 'nameUserExtended':
+                return this.nameUserExtendedValidator(formControl);
+            case 'ageUserExtended':
+                return this.ageUserExtendedValidator(formControl);
+            case 'descriptionUserExtended':
+                return this.descriptionUserExtendedValidator(formControl);
             case 'versionUserExtended':
                 return this.versionUserExtendedValidator(formControl);
             case 'createdAtUserExtended':
@@ -88,34 +105,14 @@ export class ValidatorServiceGenerated {
         }
     }
 
-    nameCompanyValidator = (control: SpiderlyFormControl): SpiderlyValidatorFn => {
+    nameCategoryValidator = (control: SpiderlyFormControl): SpiderlyValidatorFn => {
         const validator: SpiderlyValidatorFn = (): ValidationErrors | null => {
             const value = control.value;
 
-            const notEmptyRule = typeof value !== 'undefined' && value !== null && value !== '';
             const min = 1;
             const max = 75;
             const stringLengthRule = (value?.length >= min && value?.length <= max) || (typeof value === 'undefined' || value === null || value === '');
 
-            const valid = notEmptyRule && stringLengthRule;
-
-            return valid ? null : { _ : this.translocoService.translate('NotEmptyLength', {min, max}) };
-        };
-        validator.hasNotEmptyRule = true;
-        control.required = true;
-        control.validator = validator;
-
-        return validator;
-    }
-
-    linkCompanyValidator = (control: SpiderlyFormControl): SpiderlyValidatorFn => {
-        const validator: SpiderlyValidatorFn = (): ValidationErrors | null => {
-            const value = control.value;
-
-            const min = 1;
-            const max = 100;
-            const stringLengthRule = (value?.length >= min && value?.length <= max) || (typeof value === 'undefined' || value === null || value === '');
-
             const valid = stringLengthRule;
 
             return valid ? null : { _ : this.translocoService.translate('Length', {min, max}) };
@@ -126,25 +123,7 @@ export class ValidatorServiceGenerated {
         return validator;
     }
 
-    descriptionCompanyValidator = (control: SpiderlyFormControl): SpiderlyValidatorFn => {
-        const validator: SpiderlyValidatorFn = (): ValidationErrors | null => {
-            const value = control.value;
-
-            const min = 1;
-            const max = 500;
-            const stringLengthRule = (value?.length >= min && value?.length <= max) || (typeof value === 'undefined' || value === null || value === '');
-
-            const valid = stringLengthRule;
-
-            return valid ? null : { _ : this.translocoService.translate('Length', {min, max}) };
-        };
-
-        control.validator = validator;
-
-        return validator;
-    }
-
-    versionCompanyValidator = (control: SpiderlyFormControl): SpiderlyValidatorFn => {
+    versionCategoryValidator = (control: SpiderlyFormControl): SpiderlyValidatorFn => {
         const validator: SpiderlyValidatorFn = (): ValidationErrors | null => {
             const value = control.value;
 
@@ -161,7 +140,7 @@ export class ValidatorServiceGenerated {
         return validator;
     }
 
-    createdAtCompanyValidator = (control: SpiderlyFormControl): SpiderlyValidatorFn => {
+    createdAtCategoryValidator = (control: SpiderlyFormControl): SpiderlyValidatorFn => {
         const validator: SpiderlyValidatorFn = (): ValidationErrors | null => {
             const value = control.value;
 
@@ -178,7 +157,7 @@ export class ValidatorServiceGenerated {
         return validator;
     }
 
-    modifiedAtCompanyValidator = (control: SpiderlyFormControl): SpiderlyValidatorFn => {
+    modifiedAtCategoryValidator = (control: SpiderlyFormControl): SpiderlyValidatorFn => {
         const validator: SpiderlyValidatorFn = (): ValidationErrors | null => {
             const value = control.value;
 
@@ -425,6 +404,131 @@ export class ValidatorServiceGenerated {
     }
 
 
+    projectNameProjectValidator = (control: SpiderlyFormControl): SpiderlyValidatorFn => {
+        const validator: SpiderlyValidatorFn = (): ValidationErrors | null => {
+            const value = control.value;
+
+            const notEmptyRule = typeof value !== 'undefined' && value !== null && value !== '';
+            const min = 1;
+            const max = 75;
+            const stringLengthRule = (value?.length >= min && value?.length <= max) || (typeof value === 'undefined' || value === null || value === '');
+
+            const valid = notEmptyRule && stringLengthRule;
+
+            return valid ? null : { _ : this.translocoService.translate('NotEmptyLength', {min, max}) };
+        };
+        validator.hasNotEmptyRule = true;
+        control.required = true;
+        control.validator = validator;
+
+        return validator;
+    }
+
+    linkProjectValidator = (control: SpiderlyFormControl): SpiderlyValidatorFn => {
+        const validator: SpiderlyValidatorFn = (): ValidationErrors | null => {
+            const value = control.value;
+
+            const min = 1;
+            const max = 100;
+            const stringLengthRule = (value?.length >= min && value?.length <= max) || (typeof value === 'undefined' || value === null || value === '');
+
+            const valid = stringLengthRule;
+
+            return valid ? null : { _ : this.translocoService.translate('Length', {min, max}) };
+        };
+
+        control.validator = validator;
+
+        return validator;
+    }
+
+    descriptionProjectValidator = (control: SpiderlyFormControl): SpiderlyValidatorFn => {
+        const validator: SpiderlyValidatorFn = (): ValidationErrors | null => {
+            const value = control.value;
+
+            const min = 1;
+            const max = 500;
+            const stringLengthRule = (value?.length >= min && value?.length <= max) || (typeof value === 'undefined' || value === null || value === '');
+
+            const valid = stringLengthRule;
+
+            return valid ? null : { _ : this.translocoService.translate('Length', {min, max}) };
+        };
+
+        control.validator = validator;
+
+        return validator;
+    }
+
+    userIdProjectValidator = (control: SpiderlyFormControl): SpiderlyValidatorFn => {
+        const validator: SpiderlyValidatorFn = (): ValidationErrors | null => {
+            const value = control.value;
+
+            const notEmptyRule = typeof value !== 'undefined' && value !== null && value !== '';
+
+            const valid = notEmptyRule;
+
+            return valid ? null : { _ : this.translocoService.translate('NotEmpty', {}) };
+        };
+        validator.hasNotEmptyRule = true;
+        control.required = true;
+        control.validator = validator;
+
+        return validator;
+    }
+
+    versionProjectValidator = (control: SpiderlyFormControl): SpiderlyValidatorFn => {
+        const validator: SpiderlyValidatorFn = (): ValidationErrors | null => {
+            const value = control.value;
+
+            const notEmptyRule = typeof value !== 'undefined' && value !== null && value !== '';
+
+            const valid = notEmptyRule;
+
+            return valid ? null : { _ : this.translocoService.translate('NotEmpty', {}) };
+        };
+        validator.hasNotEmptyRule = true;
+        control.required = true;
+        control.validator = validator;
+
+        return validator;
+    }
+
+    createdAtProjectValidator = (control: SpiderlyFormControl): SpiderlyValidatorFn => {
+        const validator: SpiderlyValidatorFn = (): ValidationErrors | null => {
+            const value = control.value;
+
+            const notEmptyRule = typeof value !== 'undefined' && value !== null && value !== '';
+
+            const valid = notEmptyRule;
+
+            return valid ? null : { _ : this.translocoService.translate('NotEmpty', {}) };
+        };
+        validator.hasNotEmptyRule = true;
+        control.required = true;
+        control.validator = validator;
+        control.updateValueAndValidity(); // FT: It's necessary only for Date Angular type
+        return validator;
+    }
+
+    modifiedAtProjectValidator = (control: SpiderlyFormControl): SpiderlyValidatorFn => {
+        const validator: SpiderlyValidatorFn = (): ValidationErrors | null => {
+            const value = control.value;
+
+            const notEmptyRule = typeof value !== 'undefined' && value !== null && value !== '';
+
+            const valid = notEmptyRule;
+
+            return valid ? null : { _ : this.translocoService.translate('NotEmpty', {}) };
+        };
+        validator.hasNotEmptyRule = true;
+        control.required = true;
+        control.validator = validator;
+        control.updateValueAndValidity(); // FT: It's necessary only for Date Angular type
+        return validator;
+    }
+
+
     emailRegistrationValidator = (control: SpiderlyFormControl): SpiderlyValidatorFn => {
         const validator: SpiderlyValidatorFn = (): ValidationErrors | null => {
             const value = control.value;
@@ -553,6 +657,59 @@ export class ValidatorServiceGenerated {
         };
         validator.hasNotEmptyRule = true;
         control.required = true;
+        control.validator = validator;
+
+        return validator;
+    }
+
+    nameUserExtendedValidator = (control: SpiderlyFormControl): SpiderlyValidatorFn => {
+        const validator: SpiderlyValidatorFn = (): ValidationErrors | null => {
+            const value = control.value;
+
+            const min = 1;
+            const max = 75;
+            const stringLengthRule = (value?.length >= min && value?.length <= max) || (typeof value === 'undefined' || value === null || value === '');
+
+            const valid = stringLengthRule;
+
+            return valid ? null : { _ : this.translocoService.translate('Length', {min, max}) };
+        };
+
+        control.validator = validator;
+
+        return validator;
+    }
+
+    ageUserExtendedValidator = (control: SpiderlyFormControl): SpiderlyValidatorFn => {
+        const validator: SpiderlyValidatorFn = (): ValidationErrors | null => {
+            const value = control.value;
+
+            const min = 0;
+            const numberMinRangeRule = (value >= min) || (typeof value === 'undefined' || value === null || value === '');
+
+            const valid = numberMinRangeRule;
+
+            return valid ? null : { _ : this.translocoService.translate('NumberRangeMin', {min}) };
+        };
+
+        control.validator = validator;
+
+        return validator;
+    }
+
+    descriptionUserExtendedValidator = (control: SpiderlyFormControl): SpiderlyValidatorFn => {
+        const validator: SpiderlyValidatorFn = (): ValidationErrors | null => {
+            const value = control.value;
+
+            const min = 1;
+            const max = 500;
+            const stringLengthRule = (value?.length >= min && value?.length <= max) || (typeof value === 'undefined' || value === null || value === '');
+
+            const valid = stringLengthRule;
+
+            return valid ? null : { _ : this.translocoService.translate('Length', {min, max}) };
+        };
+
         control.validator = validator;
 
         return validator;

@@ -4,6 +4,7 @@ using IgniteList.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IgniteList.Infrastructure.Migrations
 {
     [DbContext(typeof(IgniteListApplicationDbContext))]
-    partial class IgniteListApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250604221738_AddedCategories")]
+    partial class AddedCategories
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,15 +42,16 @@ namespace IgniteList.Infrastructure.Migrations
                     b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Name")
-                        .HasMaxLength(75)
-                        .HasColumnType("nvarchar(75)");
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
 
                     b.Property<int>("Version")
                         .IsConcurrencyToken()
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Category");
                 });
@@ -306,6 +310,17 @@ namespace IgniteList.Infrastructure.Migrations
                     b.ToTable("UserRole");
                 });
 
+            modelBuilder.Entity("IgniteList.Business.Entities.Category", b =>
+                {
+                    b.HasOne("IgniteList.Business.Entities.UserExtended", "User")
+                        .WithMany("Categories")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("IgniteList.Business.Entities.Project", b =>
                 {
                     b.HasOne("IgniteList.Business.Entities.UserExtended", "User")
@@ -391,6 +406,8 @@ namespace IgniteList.Infrastructure.Migrations
 
             modelBuilder.Entity("IgniteList.Business.Entities.UserExtended", b =>
                 {
+                    b.Navigation("Categories");
+
                     b.Navigation("Projects");
                 });
 #pragma warning restore 612, 618

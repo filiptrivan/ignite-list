@@ -2,13 +2,9 @@ import { BaseEntity, TableFilter, TableFilterContext, TableFilterSortMeta, MimeT
 
 
 
-export class Company extends BaseEntity
+export class Category extends BaseEntity
 {
-    logoBlobNameData?: string;
-	logoBlobName?: string;
-	name?: string;
-	link?: string;
-	description?: string;
+    name?: string;
 	version?: number;
 	id?: number;
 	createdAt?: Date;
@@ -16,34 +12,22 @@ export class Company extends BaseEntity
 
     constructor(
     {
-        logoBlobNameData,
-		logoBlobName,
-		name,
-		link,
-		description,
+        name,
 		version,
 		id,
 		createdAt,
 		modifiedAt
     }:{
-        logoBlobNameData?: string;
-		logoBlobName?: string;
-		name?: string;
-		link?: string;
-		description?: string;
+        name?: string;
 		version?: number;
 		id?: number;
 		createdAt?: Date;
 		modifiedAt?: Date;     
     } = {}
     ) {
-        super('Company'); 
+        super('Category'); 
 
-        this.logoBlobNameData = logoBlobNameData;
-		this.logoBlobName = logoBlobName;
-		this.name = name;
-		this.link = link;
-		this.description = description;
+        this.name = name;
 		this.version = version;
 		this.id = id;
 		this.createdAt = createdAt;
@@ -52,38 +36,38 @@ export class Company extends BaseEntity
 }
 
 
-export class CompanySaveBody extends BaseEntity
+export class CategorySaveBody extends BaseEntity
 {
-    companyDTO?: Company;
+    categoryDTO?: Category;
 
     constructor(
     {
-        companyDTO
+        categoryDTO
     }:{
-        companyDTO?: Company;     
+        categoryDTO?: Category;     
     } = {}
     ) {
-        super('CompanySaveBody'); 
+        super('CategorySaveBody'); 
 
-        this.companyDTO = companyDTO;
+        this.categoryDTO = categoryDTO;
     }
 }
 
 
-export class CompanyMainUIForm extends BaseEntity
+export class CategoryMainUIForm extends BaseEntity
 {
-    companyDTO?: Company;
+    categoryDTO?: Category;
 
     constructor(
     {
-        companyDTO
+        categoryDTO
     }:{
-        companyDTO?: Company;     
+        categoryDTO?: Category;     
     } = {}
     ) {
-        super('CompanyMainUIForm'); 
+        super('CategoryMainUIForm'); 
 
-        this.companyDTO = companyDTO;
+        this.categoryDTO = categoryDTO;
     }
 }
 
@@ -190,9 +174,172 @@ export class NotificationMainUIForm extends BaseEntity
 }
 
 
+export class Project extends BaseEntity
+{
+    logoBlobNameData?: string;
+	logoBlobName?: string;
+	projectName?: string;
+	link?: string;
+	description?: string;
+	userDisplayName?: string;
+	userId?: number;
+	version?: number;
+	id?: number;
+	createdAt?: Date;
+	modifiedAt?: Date;
+
+    constructor(
+    {
+        logoBlobNameData,
+		logoBlobName,
+		projectName,
+		link,
+		description,
+		userDisplayName,
+		userId,
+		version,
+		id,
+		createdAt,
+		modifiedAt
+    }:{
+        logoBlobNameData?: string;
+		logoBlobName?: string;
+		projectName?: string;
+		link?: string;
+		description?: string;
+		userDisplayName?: string;
+		userId?: number;
+		version?: number;
+		id?: number;
+		createdAt?: Date;
+		modifiedAt?: Date;     
+    } = {}
+    ) {
+        super('Project'); 
+
+        this.logoBlobNameData = logoBlobNameData;
+		this.logoBlobName = logoBlobName;
+		this.projectName = projectName;
+		this.link = link;
+		this.description = description;
+		this.userDisplayName = userDisplayName;
+		this.userId = userId;
+		this.version = version;
+		this.id = id;
+		this.createdAt = createdAt;
+		this.modifiedAt = modifiedAt;
+    }
+}
+
+
+export class ProjectSaveBody extends BaseEntity
+{
+    projectDTO?: Project;
+
+    constructor(
+    {
+        projectDTO
+    }:{
+        projectDTO?: Project;     
+    } = {}
+    ) {
+        super('ProjectSaveBody'); 
+
+        this.projectDTO = projectDTO;
+    }
+}
+
+
+export class ProjectMainUIForm extends BaseEntity
+{
+    projectDTO?: Project;
+
+    constructor(
+    {
+        projectDTO
+    }:{
+        projectDTO?: Project;     
+    } = {}
+    ) {
+        super('ProjectMainUIForm'); 
+
+        this.projectDTO = projectDTO;
+    }
+}
+
+
+export class Upvote extends BaseEntity
+{
+    userDisplayName?: string;
+	userId?: number;
+	projectDisplayName?: string;
+	projectId?: number;
+
+    constructor(
+    {
+        userDisplayName,
+		userId,
+		projectDisplayName,
+		projectId
+    }:{
+        userDisplayName?: string;
+		userId?: number;
+		projectDisplayName?: string;
+		projectId?: number;     
+    } = {}
+    ) {
+        super('Upvote'); 
+
+        this.userDisplayName = userDisplayName;
+		this.userId = userId;
+		this.projectDisplayName = projectDisplayName;
+		this.projectId = projectId;
+    }
+}
+
+
+export class UpvoteSaveBody extends BaseEntity
+{
+    upvoteDTO?: Upvote;
+
+    constructor(
+    {
+        upvoteDTO
+    }:{
+        upvoteDTO?: Upvote;     
+    } = {}
+    ) {
+        super('UpvoteSaveBody'); 
+
+        this.upvoteDTO = upvoteDTO;
+    }
+}
+
+
+export class UpvoteMainUIForm extends BaseEntity
+{
+    upvoteDTO?: Upvote;
+
+    constructor(
+    {
+        upvoteDTO
+    }:{
+        upvoteDTO?: Upvote;     
+    } = {}
+    ) {
+        super('UpvoteMainUIForm'); 
+
+        this.upvoteDTO = upvoteDTO;
+    }
+}
+
+
 export class UserExtended extends BaseEntity
 {
     email?: string;
+	name?: string;
+	age?: number;
+	description?: string;
 	hasLoggedInWithExternalProvider?: boolean;
 	isDisabled?: boolean;
 	version?: number;
@@ -203,6 +350,9 @@ export class UserExtended extends BaseEntity
     constructor(
     {
         email,
+		name,
+		age,
+		description,
 		hasLoggedInWithExternalProvider,
 		isDisabled,
 		version,
@@ -211,6 +361,9 @@ export class UserExtended extends BaseEntity
 		modifiedAt
     }:{
         email?: string;
+		name?: string;
+		age?: number;
+		description?: string;
 		hasLoggedInWithExternalProvider?: boolean;
 		isDisabled?: boolean;
 		version?: number;
@@ -222,6 +375,9 @@ export class UserExtended extends BaseEntity
         super('UserExtended'); 
 
         this.email = email;
+		this.name = name;
+		this.age = age;
+		this.description = description;
 		this.hasLoggedInWithExternalProvider = hasLoggedInWithExternalProvider;
 		this.isDisabled = isDisabled;
 		this.version = version;

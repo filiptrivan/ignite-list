@@ -6,7 +6,7 @@ import { ConfigService } from 'src/app/business/services/config.service';
 import { Subscription } from 'rxjs';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-import { FooterComponent, LayoutBaseComponent, AppSidebarComponent, AppTopBarComponent, LayoutBaseService, PrimengModule, SpiderlyMenuItem} from 'spiderly';
+import { FooterComponent, LayoutBaseComponent, AppSidebarComponent, AppTopBarComponent, LayoutBaseService, PrimengModule, SpiderlyMenuItem } from 'spiderly';
 import { CommonModule } from '@angular/common';
 import { BusinessPermissionCodes } from '../enums/business-enums.generated';
 import { SecurityPermissionCodes } from 'spiderly';
@@ -29,8 +29,8 @@ export class LayoutComponent extends LayoutBaseComponent implements OnInit, OnDe
     menu: SpiderlyMenuItem[];
 
     constructor(
-        protected override layoutService: LayoutBaseService, 
-        protected override renderer: Renderer2, 
+        protected override layoutService: LayoutBaseService,
+        protected override renderer: Renderer2,
         protected override router: Router,
         private authService: AuthService,
         private config: ConfigService,
@@ -44,23 +44,34 @@ export class LayoutComponent extends LayoutBaseComponent implements OnInit, OnDe
             {
                 visible: true,
                 items: [
-                    { 
-                        label: this.translocoService.translate('Home'), 
-                        icon: 'pi pi-fw pi-home', 
+                    {
+                        label: this.translocoService.translate('Home'),
+                        icon: 'pi pi-fw pi-home',
                         routerLink: [''],
                         visible: true,
                     },
-                    { 
-                        label: this.translocoService.translate('Company'), 
-                        icon: 'pi pi-fw pi-home', 
-                        routerLink: ['companies'],
+                    {
+                        label: this.translocoService.translate('Project'),
+                        icon: 'pi pi-fw pi-briefcase',
+                        routerLink: ['projects'],
+                        visible: true,
+                    },
+                    {
+                        label: this.translocoService.translate('Category'),
+                        icon: 'pi pi-fw pi-briefcase',
+                        routerLink: ['categories'],
+                        hasPermission: (permissionCodes: string[]): boolean => {
+                            return (
+                                permissionCodes?.includes(BusinessPermissionCodes.ReadCategory)
+                            )
+                        },
                         visible: true,
                     },
                     {
                         label: this.translocoService.translate('Administration'),
                         icon: 'pi pi-fw pi-cog',
                         visible: true,
-                        hasPermission: (permissionCodes: string[]): boolean => { 
+                        hasPermission: (permissionCodes: string[]): boolean => {
                             return (
                                 permissionCodes?.includes(BusinessPermissionCodes.ReadUserExtended) ||
                                 permissionCodes?.includes(SecurityPermissionCodes.ReadRole) ||
@@ -72,7 +83,7 @@ export class LayoutComponent extends LayoutBaseComponent implements OnInit, OnDe
                                 label: this.translocoService.translate('UserList'),
                                 icon: 'pi pi-fw pi-user',
                                 routerLink: [`/${this.config.administrationSlug}/users`],
-                                hasPermission: (permissionCodes: string[]): boolean => { 
+                                hasPermission: (permissionCodes: string[]): boolean => {
                                     return (
                                         permissionCodes?.includes(BusinessPermissionCodes.ReadUserExtended)
                                     )
@@ -83,7 +94,7 @@ export class LayoutComponent extends LayoutBaseComponent implements OnInit, OnDe
                                 label: this.translocoService.translate('RoleList'),
                                 icon: 'pi pi-fw pi-id-card',
                                 routerLink: [`/${this.config.administrationSlug}/roles`],
-                                hasPermission: (permissionCodes: string[]): boolean => { 
+                                hasPermission: (permissionCodes: string[]): boolean => {
                                     return (
                                         permissionCodes?.includes(SecurityPermissionCodes.ReadRole)
                                     )
@@ -94,7 +105,7 @@ export class LayoutComponent extends LayoutBaseComponent implements OnInit, OnDe
                                 label: this.translocoService.translate('NotificationList'),
                                 icon: 'pi pi-fw pi-bell',
                                 routerLink: [`/${this.config.administrationSlug}/notifications`],
-                                hasPermission: (permissionCodes: string[]): boolean => { 
+                                hasPermission: (permissionCodes: string[]): boolean => {
                                     return (
                                         permissionCodes?.includes(BusinessPermissionCodes.ReadNotification)
                                     )
@@ -109,7 +120,7 @@ export class LayoutComponent extends LayoutBaseComponent implements OnInit, OnDe
     }
 
     override onAfterNgDestroy = () => {
-        
+
     }
 }
 

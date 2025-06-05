@@ -3,7 +3,8 @@ import { DashboardComponent } from './dashboard.component';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { RouterModule, Routes } from '@angular/router';
 import { InfoCardComponent } from 'spiderly';
-
+import { ListboxModule } from 'primeng/listbox';
+import { FormsModule } from '@angular/forms';
 const routes: Routes = [
     {
         path: '', 
@@ -16,6 +17,9 @@ const routes: Routes = [
         RouterModule.forChild(routes),
         TranslocoDirective,
         InfoCardComponent,
+        ListboxModule,
+        FormsModule
+
     ],
     declarations: [DashboardComponent],
     providers:[]

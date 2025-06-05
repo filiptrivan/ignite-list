@@ -6,12 +6,12 @@ namespace IgniteList.WebAPI.Controllers
 {
     [ApiController]
     [Route("/api/[controller]/[action]")]
-    public class CompanyController : CompanyBaseController
+    public class ProjectController : ProjectBaseController
     {
         private readonly IApplicationDbContext _context;
         private readonly IgniteListBusinessService _igniteListBusinessService;
 
-        public CompanyController(
+        public ProjectController(
             IApplicationDbContext context,
             IgniteListBusinessService igniteListBusinessService
         )

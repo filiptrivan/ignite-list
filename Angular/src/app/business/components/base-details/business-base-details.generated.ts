@@ -11,10 +11,10 @@ import { combineLatest, firstValueFrom, forkJoin, map, Observable, of, Subscript
 import { MenuItem } from 'primeng/api';
 import { AuthService } from '../../services/auth/auth.service';
 import { PrimengModule, SpiderlyControlsModule, CardSkeletonComponent, IndexCardComponent, IsAuthorizedForSaveEvent, SpiderlyDataTableComponent, SpiderlyFormArray, BaseEntity, LastMenuIconIndexClicked, SpiderlyFormGroup, SpiderlyButton, nameof, BaseFormService, getControl, Column, TableFilter, LazyLoadSelectedIdsResult, AllClickEvent, SpiderlyFileSelectEvent, getPrimengDropdownNamebookOptions, PrimengOption, SpiderlyFormControl, getPrimengAutocompleteNamebookOptions } from 'spiderly';
-import { Notification, NotificationSaveBody, Company, UserExtended, UserNotification, CompanySaveBody, UserExtendedSaveBody, UserNotificationSaveBody } from '../../entities/business-entities.generated';
+import { Notification, NotificationSaveBody, Category, Project, Upvote, UserExtended, UserNotification, CategorySaveBody, ProjectSaveBody, UpvoteSaveBody, UserExtendedSaveBody, UserNotificationSaveBody } from '../../entities/business-entities.generated';
 
 @Component({
-    selector: 'company-base-details',
+    selector: 'category-base-details',
     template: `
 <ng-container *transloco="let t">
     <spiderly-panel [isFirstMultiplePanel]="isFirstMultiplePanel" [isMiddleMultiplePanel]="isMiddleMultiplePanel" [isLastMultiplePanel]="isLastMultiplePanel" [showPanelHeader]="showPanelHeader" >
@@ -24,17 +24,8 @@ import { Notification, NotificationSaveBody, Company, UserExtended, UserNotifica
             @defer (when loading === false) {
                 <form class="grid">
                     <ng-content select="[BEFORE]"></ng-content>
-                    <div *ngIf="showLogoBlobNameForCompany" class="col-12">
-                        <spiderly-file [control]="control('logoBlobName', companyFormGroup)" [fileData]="companyFormGroup.controls.logoBlobNameData.getRawValue()" [objectId]="companyFormGroup.controls.id.getRawValue()" (onFileSelected)="uploadLogoBlobNameForCompany($event)" [disabled]="!isAuthorizedForSave"></spiderly-file>
-                    </div>
-                    <div *ngIf="showNameForCompany" class="col-12 md:col-6">
-                        <spiderly-textbox [control]="control('name', companyFormGroup)"></spiderly-textbox>
-                    </div>
-                    <div *ngIf="showLinkForCompany" class="col-12 md:col-6">
-                        <spiderly-textbox [control]="control('link', companyFormGroup)"></spiderly-textbox>
-                    </div>
-                    <div *ngIf="showDescriptionForCompany" class="col-12">
-                        <spiderly-textarea [control]="control('description', companyFormGroup)"></spiderly-textarea>
+                    <div *ngIf="showNameForCategory" class="col-12 md:col-6">
+                        <spiderly-textbox [control]="control('name', categoryFormGroup)"></spiderly-textbox>
                     </div>
                     <ng-content select="[AFTER]"></ng-content>
                 </form>
@@ -65,12 +56,12 @@ import { Notification, NotificationSaveBody, Company, UserExtended, UserNotifica
         SpiderlyDataTableComponent,
     ]
 })
-export class CompanyBaseDetailsComponent {
+export class CategoryBaseDetailsComponent {
     @Output() onSave = new EventEmitter<void>();
-    @Output() onCompanyFormGroupInitFinish = new EventEmitter<void>();
+    @Output() onCategoryFormGroupInitFinish = new EventEmitter<void>();
     @Input() getCrudMenuForOrderedData: (formArray: SpiderlyFormArray, modelConstructor: BaseEntity, lastMenuIconIndexClicked: LastMenuIconIndexClicked, adjustFormArrayManually: boolean) => MenuItem[];
     @Input() formGroup: SpiderlyFormGroup;
-    @Input() companyFormGroup: SpiderlyFormGroup<Company>;
+    @Input() categoryFormGroup: SpiderlyFormGroup<Category>;
     @Input() additionalButtons: SpiderlyButton[] = [];
     @Input() isFirstMultiplePanel: boolean = false;
     @Input() isMiddleMultiplePanel: boolean = false;
@@ -80,14 +71,14 @@ export class CompanyBaseDetailsComponent {
     @Input() panelIcon: string;
     @Input() showReturnButton: boolean = true;
     authorizationForSaveSubscription: Subscription;
-    @Input() authorizedForSaveObservable: () => Observable<boolean> = () => of(true);
-    isAuthorizedForSave: boolean = true;
+    @Input() authorizedForSaveObservable: () => Observable<boolean> = () => of(false);
+    isAuthorizedForSave: boolean = false;
     @Output() onIsAuthorizedForSaveChange = new EventEmitter<IsAuthorizedForSaveEvent>(); 
 
     modelId: number;
     loading: boolean = true;
 
-    companySaveBodyName: string = nameof<CompanySaveBody>('companyDTO');
+    categorySaveBodyName: string = nameof<CategorySaveBody>('categoryDTO');
 
 
 
@@ -97,10 +88,7 @@ export class CompanyBaseDetailsComponent {
 
 
 
-    @Input() showLogoBlobNameForCompany: boolean = true;
-    @Input() showNameForCompany: boolean = true;
-    @Input() showLinkForCompany: boolean = true;
-    @Input() showDescriptionForCompany: boolean = true;
+    @Input() showNameForCategory: boolean = true;
 
 
     constructor(
@@ -115,8 +103,8 @@ export class CompanyBaseDetailsComponent {
 
     ngOnInit(){
         this.formGroup.initSaveBody = () => { 
-            let saveBody = new CompanySaveBody();
-            saveBody.companyDTO = this.companyFormGroup.getRawValue();
+            let saveBody = new CategorySaveBody();
+            saveBody.categoryDTO = this.categoryFormGroup.getRawValue();
 
 
 
@@ -124,8 +112,8 @@ export class CompanyBaseDetailsComponent {
             return saveBody;
         }
 
-        this.formGroup.saveObservableMethod = this.apiService.saveCompany;
-        this.formGroup.mainDTOName = this.companySaveBodyName;
+        this.formGroup.saveObservableMethod = this.apiService.saveCategory;
+        this.formGroup.mainDTOName = this.categorySaveBodyName;
 
         this.route.params.subscribe(async (params) => {
             this.modelId = params['id'];
@@ -135,10 +123,10 @@ export class CompanyBaseDetailsComponent {
 
             if(this.modelId > 0){
                 forkJoin({
-                    mainUIFormDTO: this.apiService.getCompanyMainUIFormDTO(this.modelId),
+                    mainUIFormDTO: this.apiService.getCategoryMainUIFormDTO(this.modelId),
                 })
                 .subscribe(({ mainUIFormDTO }) => {
-                    this.initCompanyFormGroup(new Company(mainUIFormDTO.companyDTO));
+                    this.initCategoryFormGroup(new Category(mainUIFormDTO.categoryDTO));
 
 
 
@@ -147,7 +135,7 @@ export class CompanyBaseDetailsComponent {
                 });
             }
             else{
-                this.initCompanyFormGroup(new Company({id: 0}));
+                this.initCategoryFormGroup(new Category({id: 0}));
 
                 this.authorizationForSaveSubscription = this.handleAuthorizationForSave().subscribe();
                 this.loading = false;
@@ -155,17 +143,17 @@ export class CompanyBaseDetailsComponent {
         });
     }
 
-    initCompanyFormGroup(company: Company) {
-        this.baseFormService.addFormGroup<Company>(
-            this.companyFormGroup, 
+    initCategoryFormGroup(category: Category) {
+        this.baseFormService.addFormGroup<Category>(
+            this.categoryFormGroup, 
             this.formGroup, 
-            company, 
-            this.companySaveBodyName,
+            category, 
+            this.categorySaveBodyName,
             []
         );
-        this.companyFormGroup.mainDTOName = this.companySaveBodyName;
+        this.categoryFormGroup.mainDTOName = this.categorySaveBodyName;
 
-        this.onCompanyFormGroupInitFinish.next();
+        this.onCategoryFormGroupInitFinish.next();
     }
 
     handleAuthorizationForSave = () => {
@@ -174,22 +162,16 @@ export class CompanyBaseDetailsComponent {
                 if (currentUserPermissionCodes != null && isAuthorizedForSave != null) {
                     this.isAuthorizedForSave =
 
-                        (currentUserPermissionCodes.includes('InsertCompany') && this.modelId <= 0) || 
-                        (currentUserPermissionCodes.includes('UpdateCompany') && this.modelId > 0) ||
+                        (currentUserPermissionCodes.includes('InsertCategory') && this.modelId <= 0) || 
+                        (currentUserPermissionCodes.includes('UpdateCategory') && this.modelId > 0) ||
                         isAuthorizedForSave;
 
                     if (this.isAuthorizedForSave) { 
-                        this.companyFormGroup.controls.logoBlobName.enable();
-                        this.companyFormGroup.controls.name.enable();
-                        this.companyFormGroup.controls.link.enable();
-                        this.companyFormGroup.controls.description.enable();
+                        this.categoryFormGroup.controls.name.enable();
 
                     }
                     else{
-                        this.companyFormGroup.controls.logoBlobName.disable();
-                        this.companyFormGroup.controls.name.disable();
-                        this.companyFormGroup.controls.link.disable();
-                        this.companyFormGroup.controls.description.disable();
+                        this.categoryFormGroup.controls.name.disable();
 
                     }
 
@@ -210,11 +192,7 @@ export class CompanyBaseDetailsComponent {
 
 
 
-    uploadLogoBlobNameForCompany(event: SpiderlyFileSelectEvent){
-        this.apiService.uploadLogoBlobNameForCompany(event.formData).subscribe((completeFileName: string) => {
-            this.companyFormGroup.controls.logoBlobName.setValue(completeFileName);
-        });
-    }
+
 
     control(formControlName: string, formGroup: SpiderlyFormGroup){
         return getControl(formControlName, formGroup);
@@ -490,6 +468,237 @@ export class NotificationBaseDetailsComponent {
 }
 
 @Component({
+    selector: 'project-base-details',
+    template: `
+<ng-container *transloco="let t">
+    <spiderly-panel [isFirstMultiplePanel]="isFirstMultiplePanel" [isMiddleMultiplePanel]="isMiddleMultiplePanel" [isLastMultiplePanel]="isLastMultiplePanel" [showPanelHeader]="showPanelHeader" >
+        <panel-header [title]="panelTitle" [icon]="panelIcon"></panel-header>
+
+        <panel-body>
+            @defer (when loading === false) {
+                <form class="grid">
+                    <ng-content select="[BEFORE]"></ng-content>
+                    <div *ngIf="showLogoBlobNameForProject" class="col-12">
+                        <spiderly-file [control]="control('logoBlobName', projectFormGroup)" [fileData]="projectFormGroup.controls.logoBlobNameData.getRawValue()" [objectId]="projectFormGroup.controls.id.getRawValue()" (onFileSelected)="uploadLogoBlobNameForProject($event)" [disabled]="!isAuthorizedForSave"></spiderly-file>
+                    </div>
+                    <div *ngIf="showProjectNameForProject" class="col-12 md:col-6">
+                        <spiderly-textbox [control]="control('projectName', projectFormGroup)"></spiderly-textbox>
+                    </div>
+                    <div *ngIf="showLinkForProject" class="col-12 md:col-6">
+                        <spiderly-textbox [control]="control('link', projectFormGroup)"></spiderly-textbox>
+                    </div>
+                    <div *ngIf="showUserForProject" class="col-12 md:col-6">
+                        <spiderly-dropdown [control]="control('userId', projectFormGroup)" [options]="userOptionsForProject"></spiderly-dropdown>
+                    </div>
+                    <div *ngIf="showDescriptionForProject" class="col-12">
+                        <spiderly-textarea [control]="control('description', projectFormGroup)"></spiderly-textarea>
+                    </div>
+                    <ng-content select="[AFTER]"></ng-content>
+                </form>
+            } @placeholder {
+                <card-skeleton [height]="502"></card-skeleton>
+            }
+        </panel-body>
+
+        <panel-footer>
+            <spiderly-button [disabled]="!isAuthorizedForSave" (onClick)="save()" [label]="t('Save')" icon="pi pi-save"></spiderly-button>
+            @for (button of additionalButtons; track button.label) {
+                <spiderly-button (onClick)="button.onClick()" [disabled]="button.disabled" [label]="button.label" [icon]="button.icon"></spiderly-button>
+            }
+            <return-button *ngIf="showReturnButton" ></return-button>
+        </panel-footer>
+    </spiderly-panel>
+</ng-container>
+    `,
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        PrimengModule,
+        SpiderlyControlsModule,
+        TranslocoDirective,
+        CardSkeletonComponent,
+        IndexCardComponent,
+        SpiderlyDataTableComponent,
+    ]
+})
+export class ProjectBaseDetailsComponent {
+    @Output() onSave = new EventEmitter<void>();
+    @Output() onProjectFormGroupInitFinish = new EventEmitter<void>();
+    @Input() getCrudMenuForOrderedData: (formArray: SpiderlyFormArray, modelConstructor: BaseEntity, lastMenuIconIndexClicked: LastMenuIconIndexClicked, adjustFormArrayManually: boolean) => MenuItem[];
+    @Input() formGroup: SpiderlyFormGroup;
+    @Input() projectFormGroup: SpiderlyFormGroup<Project>;
+    @Input() additionalButtons: SpiderlyButton[] = [];
+    @Input() isFirstMultiplePanel: boolean = false;
+    @Input() isMiddleMultiplePanel: boolean = false;
+    @Input() isLastMultiplePanel: boolean = false;
+    @Input() showPanelHeader: boolean = true;
+    @Input() panelTitle: string;
+    @Input() panelIcon: string;
+    @Input() showReturnButton: boolean = true;
+    authorizationForSaveSubscription: Subscription;
+    @Input() authorizedForSaveObservable: () => Observable<boolean> = () => of(true);
+    isAuthorizedForSave: boolean = true;
+    @Output() onIsAuthorizedForSaveChange = new EventEmitter<IsAuthorizedForSaveEvent>(); 
+
+    modelId: number;
+    loading: boolean = true;
+
+    projectSaveBodyName: string = nameof<ProjectSaveBody>('projectDTO');
+
+
+
+    userOptionsForProject: PrimengOption[];
+
+
+
+
+
+    @Input() showLogoBlobNameForProject: boolean = true;
+    @Input() showProjectNameForProject: boolean = true;
+    @Input() showLinkForProject: boolean = true;
+    @Input() showUserForProject: boolean = true;
+    @Input() showDescriptionForProject: boolean = true;
+
+
+    constructor(
+        private apiService: ApiService,
+        private route: ActivatedRoute,
+        private baseFormService: BaseFormService,
+        private validatorService: ValidatorService,
+        private translateLabelsService: TranslateLabelsService,
+        private translocoService: TranslocoService,
+        private authService: AuthService,
+    ) {}
+
+    ngOnInit(){
+        this.formGroup.initSaveBody = () => { 
+            let saveBody = new ProjectSaveBody();
+            saveBody.projectDTO = this.projectFormGroup.getRawValue();
+
+
+
+
+            return saveBody;
+        }
+
+        this.formGroup.saveObservableMethod = this.apiService.saveProject;
+        this.formGroup.mainDTOName = this.projectSaveBodyName;
+
+        this.route.params.subscribe(async (params) => {
+            this.modelId = params['id'];
+
+            getPrimengDropdownNamebookOptions(this.apiService.getUserDropdownListForProject, this.modelId).subscribe(po => {
+                this.userOptionsForProject = po;
+            });
+
+
+            if(this.modelId > 0){
+                forkJoin({
+                    mainUIFormDTO: this.apiService.getProjectMainUIFormDTO(this.modelId),
+                })
+                .subscribe(({ mainUIFormDTO }) => {
+                    this.initProjectFormGroup(new Project(mainUIFormDTO.projectDTO));
+
+
+
+                    this.authorizationForSaveSubscription = this.handleAuthorizationForSave().subscribe();
+                    this.loading = false;
+                });
+            }
+            else{
+                this.initProjectFormGroup(new Project({id: 0}));
+
+                this.authorizationForSaveSubscription = this.handleAuthorizationForSave().subscribe();
+                this.loading = false;
+            }
+        });
+    }
+
+    initProjectFormGroup(project: Project) {
+        this.baseFormService.addFormGroup<Project>(
+            this.projectFormGroup, 
+            this.formGroup, 
+            project, 
+            this.projectSaveBodyName,
+            []
+        );
+        this.projectFormGroup.mainDTOName = this.projectSaveBodyName;
+
+        this.onProjectFormGroupInitFinish.next();
+    }
+
+    handleAuthorizationForSave = () => {
+        return combineLatest([this.authService.currentUserPermissionCodes$, this.authorizedForSaveObservable()]).pipe(
+            map(([currentUserPermissionCodes, isAuthorizedForSave]) => {
+                if (currentUserPermissionCodes != null && isAuthorizedForSave != null) {
+                    this.isAuthorizedForSave =
+
+                        (currentUserPermissionCodes.includes('InsertProject') && this.modelId <= 0) || 
+                        (currentUserPermissionCodes.includes('UpdateProject') && this.modelId > 0) ||
+                        isAuthorizedForSave;
+
+                    if (this.isAuthorizedForSave) { 
+                        this.projectFormGroup.controls.logoBlobName.enable();
+                        this.projectFormGroup.controls.projectName.enable();
+                        this.projectFormGroup.controls.link.enable();
+                        this.projectFormGroup.controls.userId.enable();
+                        this.projectFormGroup.controls.description.enable();
+
+                    }
+                    else{
+                        this.projectFormGroup.controls.logoBlobName.disable();
+                        this.projectFormGroup.controls.projectName.disable();
+                        this.projectFormGroup.controls.link.disable();
+                        this.projectFormGroup.controls.userId.disable();
+                        this.projectFormGroup.controls.description.disable();
+
+                    }
+
+                    this.onIsAuthorizedForSaveChange.next(new IsAuthorizedForSaveEvent({
+                        isAuthorizedForSave: this.isAuthorizedForSave, 
+                        currentUserPermissionCodes: currentUserPermissionCodes
+                    })); 
+                }
+            })
+        );
+    }
+
+
+
+
+
+
+
+
+
+    uploadLogoBlobNameForProject(event: SpiderlyFileSelectEvent){
+        this.apiService.uploadLogoBlobNameForProject(event.formData).subscribe((completeFileName: string) => {
+            this.projectFormGroup.controls.logoBlobName.setValue(completeFileName);
+        });
+    }
+
+    control(formControlName: string, formGroup: SpiderlyFormGroup){
+        return getControl(formControlName, formGroup);
+    }
+
+    getFormArrayGroups<T>(formArray: SpiderlyFormArray): SpiderlyFormGroup<T>[]{
+        return this.baseFormService.getFormArrayGroups<T>(formArray);
+    }
+
+    save(){
+        this.onSave.next();
+    }
+
+	ngOnDestroy(){
+        if (this.authorizationForSaveSubscription) {
+            this.authorizationForSaveSubscription.unsubscribe();
+        }
+    }
+
+}
+
+@Component({
     selector: 'user-extended-base-details',
     template: `
 <ng-container *transloco="let t">
@@ -500,11 +709,20 @@ export class NotificationBaseDetailsComponent {
             @defer (when loading === false) {
                 <form class="grid">
                     <ng-content select="[BEFORE]"></ng-content>
+                    <div *ngIf="showNameForUserExtended" class="col-12 md:col-6">
+                        <spiderly-textbox [control]="control('name', userExtendedFormGroup)"></spiderly-textbox>
+                    </div>
+                    <div *ngIf="showAgeForUserExtended" class="col-12 md:col-6">
+                        <spiderly-number [control]="control('age', userExtendedFormGroup)"></spiderly-number>
+                    </div>
                     <div *ngIf="showHasLoggedInWithExternalProviderForUserExtended" class="col-12 md:col-6">
                         <spiderly-checkbox [control]="control('hasLoggedInWithExternalProvider', userExtendedFormGroup)"></spiderly-checkbox>
                     </div>
                     <div *ngIf="showIsDisabledForUserExtended" class="col-12 md:col-6">
                         <spiderly-checkbox [control]="control('isDisabled', userExtendedFormGroup)"></spiderly-checkbox>
+                    </div>
+                    <div *ngIf="showDescriptionForUserExtended" class="col-12">
+                        <spiderly-textarea [control]="control('description', userExtendedFormGroup)"></spiderly-textarea>
                     </div>
                     <ng-content select="[AFTER]"></ng-content>
                 </form>
@@ -550,8 +768,8 @@ export class UserExtendedBaseDetailsComponent {
     @Input() panelIcon: string;
     @Input() showReturnButton: boolean = true;
     authorizationForSaveSubscription: Subscription;
-    @Input() authorizedForSaveObservable: () => Observable<boolean> = () => of(false);
-    isAuthorizedForSave: boolean = false;
+    @Input() authorizedForSaveObservable: () => Observable<boolean> = () => of(true);
+    isAuthorizedForSave: boolean = true;
     @Output() onIsAuthorizedForSaveChange = new EventEmitter<IsAuthorizedForSaveEvent>(); 
 
     modelId: number;
@@ -567,8 +785,11 @@ export class UserExtendedBaseDetailsComponent {
 
 
 
+    @Input() showNameForUserExtended: boolean = true;
+    @Input() showAgeForUserExtended: boolean = true;
     @Input() showHasLoggedInWithExternalProviderForUserExtended: boolean = true;
     @Input() showIsDisabledForUserExtended: boolean = true;
+    @Input() showDescriptionForUserExtended: boolean = true;
 
 
     constructor(
@@ -647,13 +868,19 @@ export class UserExtendedBaseDetailsComponent {
                         isAuthorizedForSave;
 
                     if (this.isAuthorizedForSave) { 
+                        this.userExtendedFormGroup.controls.name.enable();
+                        this.userExtendedFormGroup.controls.age.enable();
                         this.userExtendedFormGroup.controls.hasLoggedInWithExternalProvider.enable();
                         this.userExtendedFormGroup.controls.isDisabled.enable();
+                        this.userExtendedFormGroup.controls.description.enable();
 
                     }
                     else{
+                        this.userExtendedFormGroup.controls.name.disable();
+                        this.userExtendedFormGroup.controls.age.disable();
                         this.userExtendedFormGroup.controls.hasLoggedInWithExternalProvider.disable();
                         this.userExtendedFormGroup.controls.isDisabled.disable();
+                        this.userExtendedFormGroup.controls.description.disable();
 
                     }
 

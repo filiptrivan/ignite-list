@@ -1,0 +1,11 @@
+<ng-container *transloco="let t">
+
+    <spiderly-data-table [tableTitle]="t('ProjectList')" 
+    [cols]="cols" 
+    [getTableDataObservableMethod]="getProjectTableDataObservableMethod" 
+    [exportTableDataToExcelObservableMethod]="exportProjectTableDataToExcelObservableMethod"
+    [deleteItemFromTableObservableMethod]="deleteProjectObservableMethod"
+    [showAddButton]="true"
+    ></spiderly-data-table>
+
+</ng-container>

@@ -58,25 +58,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Company" xml:space="preserve">
+  <data name="Category" xml:space="preserve">
     <value />
   </data>
-  <data name="CompanyList" xml:space="preserve">
+  <data name="CategoryList" xml:space="preserve">
     <value />
   </data>
-  <data name="CompanyExcelExportName" xml:space="preserve">
-    <value />
-  </data>
-  <data name="LogoBlobName" xml:space="preserve">
+  <data name="CategoryExcelExportName" xml:space="preserve">
     <value />
   </data>
   <data name="Name" xml:space="preserve">
-    <value />
-  </data>
-  <data name="Link" xml:space="preserve">
-    <value />
-  </data>
-  <data name="Description" xml:space="preserve">
     <value />
   </data>
   <data name="Id" xml:space="preserve">
@@ -101,6 +92,9 @@
     <value />
   </data>
   <data name="Title" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Description" xml:space="preserve">
     <value />
   </data>
   <data name="EmailBody" xml:space="preserve">
@@ -130,6 +124,30 @@
   <data name="Roles" xml:space="preserve">
     <value />
   </data>
+  <data name="Project" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ProjectList" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ProjectExcelExportName" xml:space="preserve">
+    <value />
+  </data>
+  <data name="LogoBlobName" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ProjectName" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Link" xml:space="preserve">
+    <value />
+  </data>
+  <data name="User" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UpvotedUsers" xml:space="preserve">
+    <value />
+  </data>
   <data name="Role" xml:space="preserve">
     <value />
   </data>
@@ -151,6 +169,15 @@
   <data name="RolePermissionExcelExportName" xml:space="preserve">
     <value />
   </data>
+  <data name="Upvote" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UpvoteList" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UpvoteExcelExportName" xml:space="preserve">
+    <value />
+  </data>
   <data name="UserExtended" xml:space="preserve">
     <value />
   </data>
@@ -163,6 +190,9 @@
   <data name="Email" xml:space="preserve">
     <value />
   </data>
+  <data name="Age" xml:space="preserve">
+    <value />
+  </data>
   <data name="HasLoggedInWithExternalProvider" xml:space="preserve">
     <value />
   </data>
@@ -172,6 +202,12 @@
   <data name="Notifications" xml:space="preserve">
     <value />
   </data>
+  <data name="Projects" xml:space="preserve">
+    <value />
+  </data>
+  <data name="UpvotedProjects" xml:space="preserve">
+    <value />
+  </data>
   <data name="UserNotification" xml:space="preserve">
     <value />
   </data>
@@ -179,9 +215,6 @@
     <value />
   </data>
   <data name="UserNotificationExcelExportName" xml:space="preserve">
-    <value />
-  </data>
-  <data name="User" xml:space="preserve">
     <value />
   </data>
   <data name="IsMarkedAsRead" xml:space="preserve">

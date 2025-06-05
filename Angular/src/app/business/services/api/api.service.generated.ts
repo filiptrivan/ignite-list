@@ -5,10 +5,16 @@ import { ApiSecurityService, TableFilter, TableResponse, Namebook, Codebook, Laz
 import { ConfigService } from '../config.service';
 import { Notification } from '../../entities/business-entities.generated';
 import { NotificationSaveBody } from '../../entities/business-entities.generated';
-import { Company } from '../../entities/business-entities.generated';
-import { CompanySaveBody } from '../../entities/business-entities.generated';
-import { CompanyMainUIForm } from '../../entities/business-entities.generated';
+import { Category } from '../../entities/business-entities.generated';
+import { CategorySaveBody } from '../../entities/business-entities.generated';
+import { CategoryMainUIForm } from '../../entities/business-entities.generated';
 import { NotificationMainUIForm } from '../../entities/business-entities.generated';
+import { Project } from '../../entities/business-entities.generated';
+import { ProjectSaveBody } from '../../entities/business-entities.generated';
+import { ProjectMainUIForm } from '../../entities/business-entities.generated';
+import { Upvote } from '../../entities/business-entities.generated';
+import { UpvoteSaveBody } from '../../entities/business-entities.generated';
+import { UpvoteMainUIForm } from '../../entities/business-entities.generated';
 import { UserExtended } from '../../entities/business-entities.generated';
 import { UserExtendedSaveBody } from '../../entities/business-entities.generated';
 import { UserExtendedMainUIForm } from '../../entities/business-entities.generated';
@@ -51,6 +57,45 @@ export class ApiGeneratedService extends ApiSecurityService {
     getCurrentUserExtended = (): Observable<UserExtended> => { 
         return this.http.get<UserExtended>(`${this.config.apiUrl}/UserExtended/GetCurrentUserExtended`, this.config.httpSkipSpinnerOptions);
     }
+
+    getCategoryTableData = (tableFilterDTO: TableFilter): Observable<TableResponse<Category>> => { 
+        return this.http.post<TableResponse<Category>>(`${this.config.apiUrl}/Category/GetCategoryTableData`, tableFilterDTO, this.config.httpSkipSpinnerOptions);
+    }
+
+    exportCategoryTableDataToExcel = (tableFilterDTO: TableFilter): Observable<any> => { 
+        return this.http.post(`${this.config.apiUrl}/Category/ExportCategoryTableDataToExcel`, tableFilterDTO, { observe: 'response', responseType: 'blob' });
+    }
+
+    getCategoryList = (): Observable<Category[]> => { 
+        return this.http.get<Category[]>(`${this.config.apiUrl}/Category/GetCategoryList`, this.config.httpOptions);
+    }
+
+    getCategoryMainUIFormDTO = (id: number): Observable<CategoryMainUIForm> => { 
+        return this.http.get<CategoryMainUIForm>(`${this.config.apiUrl}/Category/GetCategoryMainUIFormDTO?id=${id}`, this.config.httpOptions);
+    }
+
+    getCategory = (id: number): Observable<Category> => { 
+        return this.http.get<Category>(`${this.config.apiUrl}/Category/GetCategory?id=${id}`, this.config.httpOptions);
+    }
+
+
+
+
+
+
+
+
+
+    saveCategory = (saveBodyDTO: CategorySaveBody): Observable<CategorySaveBody> => { 
+        return this.http.put<CategorySaveBody>(`${this.config.apiUrl}/Category/SaveCategory`, saveBodyDTO, this.config.httpOptions);
+    }
+
+
+
+    deleteCategory = (id: number): Observable<any> => { 
+        return this.http.delete(`${this.config.apiUrl}/Category/DeleteCategory?id=${id}`, this.config.httpOptions);
+    }
+
 
     getNotificationTableData = (tableFilterDTO: TableFilter): Observable<TableResponse<Notification>> => { 
         return this.http.post<TableResponse<Notification>>(`${this.config.apiUrl}/Notification/GetNotificationTableData`, tableFilterDTO, this.config.httpSkipSpinnerOptions);
@@ -101,6 +146,50 @@ export class ApiGeneratedService extends ApiSecurityService {
     }
 
 
+    getProjectTableData = (tableFilterDTO: TableFilter): Observable<TableResponse<Project>> => { 
+        return this.http.post<TableResponse<Project>>(`${this.config.apiUrl}/Project/GetProjectTableData`, tableFilterDTO, this.config.httpSkipSpinnerOptions);
+    }
+
+    exportProjectTableDataToExcel = (tableFilterDTO: TableFilter): Observable<any> => { 
+        return this.http.post(`${this.config.apiUrl}/Project/ExportProjectTableDataToExcel`, tableFilterDTO, { observe: 'response', responseType: 'blob' });
+    }
+
+    getProjectList = (): Observable<Project[]> => { 
+        return this.http.get<Project[]>(`${this.config.apiUrl}/Project/GetProjectList`, this.config.httpOptions);
+    }
+
+    getProjectMainUIFormDTO = (id: number): Observable<ProjectMainUIForm> => { 
+        return this.http.get<ProjectMainUIForm>(`${this.config.apiUrl}/Project/GetProjectMainUIFormDTO?id=${id}`, this.config.httpOptions);
+    }
+
+    getProject = (id: number): Observable<Project> => { 
+        return this.http.get<Project>(`${this.config.apiUrl}/Project/GetProject?id=${id}`, this.config.httpOptions);
+    }
+
+
+
+    getUserDropdownListForProject = (projectId?: number): Observable<Namebook[]> => { 
+        return this.http.get<Namebook[]>(`${this.config.apiUrl}/Project/GetUserDropdownListForProject?projectId=${projectId}`, this.config.httpSkipSpinnerOptions);
+    }
+
+
+
+
+
+
+    saveProject = (saveBodyDTO: ProjectSaveBody): Observable<ProjectSaveBody> => { 
+        return this.http.put<ProjectSaveBody>(`${this.config.apiUrl}/Project/SaveProject`, saveBodyDTO, this.config.httpOptions);
+    }
+
+    uploadLogoBlobNameForProject = (file: any): Observable<string> => { 
+        return this.http.post(`${this.config.apiUrl}/Project/UploadLogoBlobNameForProject`, file, { ...this.config.httpOptions, responseType: 'text' });
+    }
+
+    deleteProject = (id: number): Observable<any> => { 
+        return this.http.delete(`${this.config.apiUrl}/Project/DeleteProject?id=${id}`, this.config.httpOptions);
+    }
+
+
     getUserExtendedTableData = (tableFilterDTO: TableFilter): Observable<TableResponse<UserExtended>> => { 
         return this.http.post<TableResponse<UserExtended>>(`${this.config.apiUrl}/UserExtended/GetUserExtendedTableData`, tableFilterDTO, this.config.httpSkipSpinnerOptions);
     }
@@ -137,47 +226,6 @@ export class ApiGeneratedService extends ApiSecurityService {
 
     deleteUserExtended = (id: number): Observable<any> => { 
         return this.http.delete(`${this.config.apiUrl}/UserExtended/DeleteUserExtended?id=${id}`, this.config.httpOptions);
-    }
-
-
-    getCompanyTableData = (tableFilterDTO: TableFilter): Observable<TableResponse<Company>> => { 
-        return this.http.post<TableResponse<Company>>(`${this.config.apiUrl}/Company/GetCompanyTableData`, tableFilterDTO, this.config.httpSkipSpinnerOptions);
-    }
-
-    exportCompanyTableDataToExcel = (tableFilterDTO: TableFilter): Observable<any> => { 
-        return this.http.post(`${this.config.apiUrl}/Company/ExportCompanyTableDataToExcel`, tableFilterDTO, { observe: 'response', responseType: 'blob' });
-    }
-
-    getCompanyList = (): Observable<Company[]> => { 
-        return this.http.get<Company[]>(`${this.config.apiUrl}/Company/GetCompanyList`, this.config.httpOptions);
-    }
-
-    getCompanyMainUIFormDTO = (id: number): Observable<CompanyMainUIForm> => { 
-        return this.http.get<CompanyMainUIForm>(`${this.config.apiUrl}/Company/GetCompanyMainUIFormDTO?id=${id}`, this.config.httpOptions);
-    }
-
-    getCompany = (id: number): Observable<Company> => { 
-        return this.http.get<Company>(`${this.config.apiUrl}/Company/GetCompany?id=${id}`, this.config.httpOptions);
-    }
-
-
-
-
-
-
-
-
-
-    saveCompany = (saveBodyDTO: CompanySaveBody): Observable<CompanySaveBody> => { 
-        return this.http.put<CompanySaveBody>(`${this.config.apiUrl}/Company/SaveCompany`, saveBodyDTO, this.config.httpOptions);
-    }
-
-    uploadLogoBlobNameForCompany = (file: any): Observable<string> => { 
-        return this.http.post(`${this.config.apiUrl}/Company/UploadLogoBlobNameForCompany`, file, { ...this.config.httpOptions, responseType: 'text' });
-    }
-
-    deleteCompany = (id: number): Observable<any> => { 
-        return this.http.delete(`${this.config.apiUrl}/Company/DeleteCompany?id=${id}`, this.config.httpOptions);
     }
 
 

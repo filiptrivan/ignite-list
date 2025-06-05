@@ -1,9 +1,9 @@
 <ng-container *transloco="let t">
-    <spiderly-card [title]="t('Company')" icon="pi pi-file-edit">
+    <spiderly-card [title]="t('Category')" icon="pi pi-file-edit">
 
-        <company-base-details
+        <category-base-details
         [formGroup]="formGroup" 
-        [companyFormGroup]="companyFormGroup" 
+        [categoryFormGroup]="categoryFormGroup" 
         (onSave)="onSave()"
         [getCrudMenuForOrderedData]="getCrudMenuForOrderedData"
         />

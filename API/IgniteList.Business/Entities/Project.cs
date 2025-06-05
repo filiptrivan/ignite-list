@@ -1,4 +1,5 @@
-﻿using Spiderly.Shared.Attributes.EF;
+﻿using Microsoft.AspNetCore.Builder;
+using Spiderly.Shared.Attributes.EF;
 using Spiderly.Shared.Attributes.EF.Translation;
 using Spiderly.Shared.Attributes.EF.UI;
 using Spiderly.Shared.BaseEntities;
@@ -13,7 +14,7 @@ using System.Threading.Tasks;
 namespace IgniteList.Business.Entities
 {
     [DoNotAuthorize]
-    public class Company : BusinessObject<long>
+    public class Project : BusinessObject<long>
     {
         [BlobName]
         [TranslateSingularEn("Logo")]
@@ -21,8 +22,8 @@ namespace IgniteList.Business.Entities
 
         [StringLength(75, MinimumLength = 1)]
         [Required]
-        [TranslateSingularEn("Company Name")]
-        public string Name { get; set; }
+        [TranslateSingularEn("Project Name")]
+        public string ProjectName { get; set; }
 
         [StringLength(100, MinimumLength = 1)]
         public string Link { get; set; }
@@ -30,6 +31,15 @@ namespace IgniteList.Business.Entities
         [UIControlType(nameof(UIControlTypeCodes.TextArea))]
         [StringLength(500, MinimumLength = 1)]
         public string Description { get; set; }
+
+        [ManyToOneRequired]
+        [WithMany(nameof(User.Projects))]
+        [UIControlType(nameof(UIControlTypeCodes.Dropdown))]
+        //[UIDoNotGenerate] 
+        public virtual UserExtended User { get; set; }
+
+        public virtual List<UserExtended> UpvotedUsers { get; } = new();
+
 
 
     }
