@@ -1,0 +1,16 @@
+<spiderly-data-view 
+[getTableDataObservableMethod]="getProjectTableDataObservableMethod" 
+[filters]="filters"
+>
+  <ng-template #cardBody [templateType]="templateType" let-item let-index="index">
+    <div style="display: flex; justify-content: space-between;">
+        <div>
+            {{item.projectName}}
+        </div>
+
+        <div>
+            <spiderly-button [outlined]="true" [rounded]="true" icon="pi pi-angle-up" (onClick)="upvote(item.id)"></spiderly-button>
+        </div>
+    </div>
+  </ng-template>
+</spiderly-data-view>
