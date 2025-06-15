@@ -187,6 +187,7 @@ export class Project extends BaseEntity
 	id?: number;
 	createdAt?: Date;
 	modifiedAt?: Date;
+	hasUpvoted?: boolean;
 
     constructor(
     {
@@ -200,7 +201,8 @@ export class Project extends BaseEntity
 		version,
 		id,
 		createdAt,
-		modifiedAt
+		modifiedAt,
+		hasUpvoted
     }:{
         logoBlobNameData?: string;
 		logoBlobName?: string;
@@ -212,7 +214,8 @@ export class Project extends BaseEntity
 		version?: number;
 		id?: number;
 		createdAt?: Date;
-		modifiedAt?: Date;     
+		modifiedAt?: Date;
+		hasUpvoted?: boolean;     
     } = {}
     ) {
         super('Project'); 
@@ -228,6 +231,7 @@ export class Project extends BaseEntity
 		this.id = id;
 		this.createdAt = createdAt;
 		this.modifiedAt = modifiedAt;
+		this.hasUpvoted = hasUpvoted;
     }
 }
 

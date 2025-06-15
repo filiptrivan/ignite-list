@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
-import { DataViewCardBody, Filter, SpiderlyControlsModule, SpiderlyDataViewComponent, SpiderlyTemplateTypeDirective } from 'spiderly';
+import { DataViewCardBody, Filter, getHtmlImgDisplayString64, SpiderlyControlsModule, SpiderlyDataViewComponent, SpiderlyTemplateTypeDirective } from 'spiderly';
 import { Category, Project } from 'src/app/business/entities/business-entities.generated';
 import { ApiService } from 'src/app/business/services/api/api.service';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   templateUrl: './homepage.component.html',
@@ -11,7 +12,8 @@ import { ApiService } from 'src/app/business/services/api/api.service';
     TranslocoDirective,
     SpiderlyDataViewComponent,
     SpiderlyTemplateTypeDirective,
-    SpiderlyControlsModule
+    SpiderlyControlsModule,
+    ButtonModule
 
   ],
 })
@@ -29,13 +31,16 @@ export class HomepageComponent implements OnInit {
   ngOnInit() {
     this.filters = [
       { name: this.translocoService.translate('Name'), filterType: 'text', field: 'projectName' },
-      { name: this.translocoService.translate('Id'), filterType: 'numeric', field: 'id', showMatchModes: true },
       { name: this.translocoService.translate('CreatedAt'), filterType: 'date', field: 'createdAt', showMatchModes: true },
     ]
   }
-  upvote(projectId: number) {
-    this.apiService.upvote(projectId).subscribe();
+  upvote(projectDTO: Project) {
+    this.apiService.upvote(projectDTO.id).subscribe();
+    projectDTO.hasUpvoted=!projectDTO.hasUpvoted;
   }
-
+  getHtmlImgDisplayString64(base64String: string){
+    console.log(base64String)
+    return getHtmlImgDisplayString64(base64String);
+  }
 }
 

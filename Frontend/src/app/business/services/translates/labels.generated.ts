@@ -102,6 +102,8 @@ export class TranslateLabelsGeneratedService {
                 return this.translocoService.translate('Category');
             case 'projectCategoryDTO':
                 return this.translocoService.translate('ProjectCategoryDTO');
+            case 'hasUpvoted':
+                return this.translocoService.translate('HasUpvoted');
             case 'logoBlobNameData':
                 return this.translocoService.translate('LogoBlobNameData');
             case 'logoBlobName':

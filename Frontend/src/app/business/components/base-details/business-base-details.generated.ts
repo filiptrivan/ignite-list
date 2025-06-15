@@ -12,7 +12,7 @@ import { combineLatest, firstValueFrom, forkJoin, map, Observable, of, Subscript
 import { MenuItem } from 'primeng/api';
 import { AuthService } from '../../services/auth/auth.service';
 import { SpiderlyControlsModule, CardSkeletonComponent, IndexCardComponent, IsAuthorizedForSaveEvent, SpiderlyDataTableComponent, SpiderlyFormArray, BaseEntity, LastMenuIconIndexClicked, SpiderlyFormGroup, SpiderlyButton, nameof, BaseFormService, getControl, Column, TableFilter, LazyLoadSelectedIdsResult, AllClickEvent, SpiderlyFileSelectEvent, getPrimengDropdownNamebookOptions, PrimengOption, SpiderlyFormControl, getPrimengAutocompleteNamebookOptions } from 'spiderly';
-import { Notification, NotificationSaveBody, Category, Project, ProjectCategory, Upvote, UserExtended, UserNotification, CategorySaveBody, ProjectSaveBody, ProjectCategorySaveBody, UpvoteSaveBody, UserExtendedSaveBody, UserNotificationSaveBody } from '../../entities/business-entities.generated';
+import { Notification, NotificationSaveBody, Project, Category, ProjectCategory, Upvote, UserExtended, UserNotification, CategorySaveBody, ProjectSaveBody, ProjectCategorySaveBody, UpvoteSaveBody, UserExtendedSaveBody, UserNotificationSaveBody } from '../../entities/business-entities.generated';
 
 @Component({
     selector: 'category-base-details',
@@ -493,6 +493,9 @@ export class NotificationBaseDetailsComponent {
                     <div *ngIf="showCategoriesForProject" class="col-12">
                         <spiderly-multiselect [control]="selectedCategoriesForProject" [options]="categoriesOptionsForProject" [label]="t('Categories')"></spiderly-multiselect>
                     </div>
+                    <div *ngIf="showHasUpvotedForProjectDTO" class="col-12 md:col-6">
+                        <spiderly-checkbox [control]="control('hasUpvoted', projectFormGroup)"></spiderly-checkbox>
+                    </div>
                     <div *ngIf="showDescriptionForProject" class="col-12">
                         <spiderly-textarea [control]="control('description', projectFormGroup)"></spiderly-textarea>
                     </div>
@@ -560,6 +563,7 @@ export class ProjectBaseDetailsComponent {
     @Input() showProjectNameForProject = true;
     @Input() showLinkForProject = true;
     @Input() showCategoriesForProject = true;
+    @Input() showHasUpvotedForProjectDTO = true;
     @Input() showDescriptionForProject = true;
 
 
@@ -649,6 +653,7 @@ export class ProjectBaseDetailsComponent {
                         this.projectFormGroup.controls.projectName.enable();
                         this.projectFormGroup.controls.link.enable();
                         this.selectedCategoriesForProject.enable();
+                        this.projectFormGroup.controls.hasUpvoted.enable();
                         this.projectFormGroup.controls.description.enable();
 
                     }
@@ -657,6 +662,7 @@ export class ProjectBaseDetailsComponent {
                         this.projectFormGroup.controls.projectName.disable();
                         this.projectFormGroup.controls.link.disable();
                         this.selectedCategoriesForProject.disable();
+                        this.projectFormGroup.controls.hasUpvoted.disable();
                         this.projectFormGroup.controls.description.disable();
 
                     }

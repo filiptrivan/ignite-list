@@ -210,20 +210,50 @@ namespace IgniteList.Business.Services
 
         #region Project
 
+        public override async Task<TableResponseDTO<ProjectDTO>> GetProjectTableData(TableFilterDTO tableFilterPayload, IQueryable<Project> query, bool authorize)
+        {
+            return await _context.WithTransactionAsync(async () =>
+            {
+                TableResponseDTO<ProjectDTO> projectTableData = await base.GetProjectTableData(tableFilterPayload, query, authorize);
+                long currentUserId = _authenticationService.GetCurrentUserId();
+                foreach (ProjectDTO projectDTO in projectTableData.Data)
+                {
+                    projectDTO.HasUpvoted = await _context.DbSet<Project>()
+                        .AnyAsync(x =>
+                            x.Id == projectDTO.Id &&
+                            x.UpvotedUsers.Any(x => x.Id == currentUserId)
+                        );
+                }
+                return projectTableData;
+            });
+        }
+
         public async Task Upvote(long projectId)
         {
             await _context.WithTransactionAsync(async () =>
+            {
+                UserExtended user = await _authenticationService.GetCurrentUser<UserExtended>();
+                Project project = await GetInstanceAsync<Project, long>(projectId, null);
+
+                Upvote existingUpvote = await _context.DbSet<Upvote>()
+                    .FirstOrDefaultAsync(u => u.Project.Id == projectId && u.User.Id == user.Id);
+
+                if (existingUpvote == null)
                 {
-                    UserExtended user = await _authenticationService.GetCurrentUser<UserExtended>();
-                    Project project = await GetInstanceAsync<Project, long>(projectId, null);
                     Upvote upvote = new Upvote
                     {
                         Project = project,
                         User = user
                     };
                     await _context.DbSet<Upvote>().AddAsync(upvote);
-                    await _context.SaveChangesAsync();
-                });
+                }
+                else
+                {
+                    _context.DbSet<Upvote>().Remove(existingUpvote);
+                }
+
+                await _context.SaveChangesAsync();
+            });
         }
 
         protected override Task OnBeforeSaveProjectAndReturnSaveBodyDTO(ProjectSaveBodyDTO saveBodyDTO)
