@@ -13,8 +13,8 @@ import { Project } from 'src/app/business/entities/business-entities.generated';
 export class ProjectTableComponent implements OnInit {
     cols: Column<Project>[];
 
-    getProjectTableDataObservableMethod = this.apiService.getProjectTableData;
-    exportProjectTableDataToExcelObservableMethod = this.apiService.exportProjectTableDataToExcel;
+    getProjectTableDataObservableMethod = this.apiService.getPaginatedProjectList;
+    exportProjectTableDataToExcelObservableMethod = this.apiService.exportProjectListToExcel;
     deleteProjectObservableMethod = this.apiService.deleteProject;
 
     constructor(

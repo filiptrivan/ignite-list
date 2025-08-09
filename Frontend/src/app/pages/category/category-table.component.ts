@@ -13,8 +13,8 @@ import { Category } from 'src/app/business/entities/business-entities.generated'
 export class CategoryTableComponent implements OnInit {
     cols: Column<Category>[];
 
-    getCategoryTableDataObservableMethod = this.apiService.getCategoryTableData;
-    exportCategoryTableDataToExcelObservableMethod = this.apiService.exportCategoryTableDataToExcel;
+    getCategoryTableDataObservableMethod = this.apiService.getPaginatedCategoryList;
+    exportCategoryTableDataToExcelObservableMethod = this.apiService.exportCategoryListToExcel;
     deleteCategoryObservableMethod = this.apiService.deleteCategory;
 
     constructor(

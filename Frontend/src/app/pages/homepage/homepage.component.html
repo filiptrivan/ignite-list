@@ -1,5 +1,5 @@
 <spiderly-data-view 
-  [getTableDataObservableMethod]="getProjectTableDataObservableMethod" 
+  [getPaginatedListObservableMethod]="getProjectTableDataObservableMethod"
   [filters]="filters"
 >
   <ng-template #cardBody [templateType]="templateType" let-projectDTO let-index="index">
@@ -19,7 +19,7 @@
       </div>
 
       <div>
-        <spiderly-button [outlined]="projectDTO.hasUpvoted" icon="pi pi-angle-up" [rounded]="true" (onClick)="upvote(projectDTO)"></spiderly-button>
+        <spiderly-button [label]="'1'" [outlined]="!projectDTO.hasUpvoted" icon="pi pi-angle-up" [rounded]="true" (onClick)="upvote(projectDTO)"></spiderly-button>
       </div>
     </div>
   </ng-template>

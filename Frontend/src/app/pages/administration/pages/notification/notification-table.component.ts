@@ -13,8 +13,8 @@ import { Notification } from 'src/app/business/entities/business-entities.genera
 export class NotificationTableComponent implements OnInit {
     cols: Column<Notification>[];
 
-    getNotificationTableDataObservableMethod = this.apiService.getNotificationTableData;
-    exportNotificationTableDataToExcelObservableMethod = this.apiService.exportNotificationTableDataToExcel;
+    getNotificationTableDataObservableMethod = this.apiService.getPaginatedNotificationList;
+    exportNotificationTableDataToExcelObservableMethod = this.apiService.exportNotificationListToExcel;
     deleteNotificationObservableMethod = this.apiService.deleteNotification;
 
     constructor(

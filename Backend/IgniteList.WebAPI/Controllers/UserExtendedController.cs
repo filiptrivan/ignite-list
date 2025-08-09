@@ -13,13 +13,13 @@ namespace IgniteList.WebAPI.Controllers
 {
     [ApiController]
     [Route("/api/[controller]/[action]")]
-    public class UserExtendedController : UserExtendedBaseController
+    public class UserController : UserBaseController
     {
         private readonly IApplicationDbContext _context;
         private readonly IgniteListBusinessService _igniteListBusinessService;
         private readonly AuthenticationService _authenticationService;
 
-        public UserExtendedController(
+        public UserController(
             IApplicationDbContext context, 
             IgniteListBusinessService igniteListBusinessService, 
             AuthenticationService authenticationService
@@ -34,10 +34,10 @@ namespace IgniteList.WebAPI.Controllers
         [HttpGet]
         [AuthGuard]
         [SkipSpinner]
-        public async Task<UserExtendedDTO> GetCurrentUserExtended()
+        public async Task<UserDTO> GetCurrentUser()
         {
             long userId = _authenticationService.GetCurrentUserId();
-            return await _igniteListBusinessService.GetUserExtendedDTO(userId, false); // Don't need to authorize because he is current user
+            return await _igniteListBusinessService.GetUserDTO(userId, false); // Don't need to authorize because he is current user
         }
 
     }

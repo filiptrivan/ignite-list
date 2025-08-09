@@ -58,6 +58,28 @@ export class TranslateLabelsGeneratedService {
                 return this.translocoService.translate('IdToken');
             case 'browser':
                 return this.translocoService.translate('Browser');
+            case 'filters':
+                return this.translocoService.translate('Filters');
+            case 'first':
+                return this.translocoService.translate('First');
+            case 'rows':
+                return this.translocoService.translate('Rows');
+            case 'multiSortMeta':
+                return this.translocoService.translate('MultiSortMeta');
+            case 'additionalFilterIdInt':
+                return this.translocoService.translate('AdditionalFilterIdInt');
+            case 'additionalFilterIdLong':
+                return this.translocoService.translate('AdditionalFilterIdLong');
+            case 'value':
+                return this.translocoService.translate('Value');
+            case 'matchMode':
+                return this.translocoService.translate('MatchMode');
+            case 'operator':
+                return this.translocoService.translate('Operator');
+            case 'field':
+                return this.translocoService.translate('Field');
+            case 'order':
+                return this.translocoService.translate('Order');
             case 'userEmail':
                 return this.translocoService.translate('UserEmail');
             case 'token':
@@ -86,10 +108,10 @@ export class TranslateLabelsGeneratedService {
                 return this.translocoService.translate('AreAllRecipientsSelected');
             case 'recipientsTableFilter':
                 return this.translocoService.translate('RecipientsTableFilter');
+            case 'data':
+                return this.translocoService.translate('Data');
             case 'totalRecords':
                 return this.translocoService.translate('TotalRecords');
-            case 'query':
-                return this.translocoService.translate('Query');
             case 'nameLatin':
                 return this.translocoService.translate('NameLatin');
             case 'descriptionLatin':
@@ -112,6 +134,8 @@ export class TranslateLabelsGeneratedService {
                 return this.translocoService.translate('ProjectName');
             case 'link':
                 return this.translocoService.translate('Link');
+            case 'upvoteCount':
+                return this.translocoService.translate('UpvoteCount');
             case 'projectDTO':
                 return this.translocoService.translate('ProjectDTO');
             case 'categoriesNamebookDTOList':
@@ -142,34 +166,6 @@ export class TranslateLabelsGeneratedService {
                 return this.translocoService.translate('SelectedUsersIds');
             case 'selectedPermissionsIds':
                 return this.translocoService.translate('SelectedPermissionsIds');
-            case 'value':
-                return this.translocoService.translate('Value');
-            case 'matchMode':
-                return this.translocoService.translate('MatchMode');
-            case 'operator':
-                return this.translocoService.translate('Operator');
-            case 'filters':
-                return this.translocoService.translate('Filters');
-            case 'first':
-                return this.translocoService.translate('First');
-            case 'rows':
-                return this.translocoService.translate('Rows');
-            case 'sortField':
-                return this.translocoService.translate('SortField');
-            case 'sortOrder':
-                return this.translocoService.translate('SortOrder');
-            case 'multiSortMeta':
-                return this.translocoService.translate('MultiSortMeta');
-            case 'additionalFilterIdInt':
-                return this.translocoService.translate('AdditionalFilterIdInt');
-            case 'additionalFilterIdLong':
-                return this.translocoService.translate('AdditionalFilterIdLong');
-            case 'field':
-                return this.translocoService.translate('Field');
-            case 'order':
-                return this.translocoService.translate('Order');
-            case 'data':
-                return this.translocoService.translate('Data');
             case 'upvoteDTO':
                 return this.translocoService.translate('UpvoteDTO');
             case 'age':
@@ -178,8 +174,8 @@ export class TranslateLabelsGeneratedService {
                 return this.translocoService.translate('HasLoggedInWithExternalProvider');
             case 'isDisabled':
                 return this.translocoService.translate('IsDisabled');
-            case 'userExtendedDTO':
-                return this.translocoService.translate('UserExtendedDTO');
+            case 'userDTO':
+                return this.translocoService.translate('UserDTO');
             case 'notification':
                 return this.translocoService.translate('Notification');
             case 'userNotificationDTO':

@@ -17,7 +17,7 @@ using Mapster;
 using FluentValidation;
 using Spiderly.Shared.Emailing;
 using Azure.Storage.Blobs;
-using Spiderly.Shared.Attributes.EF;
+using Spiderly.Shared.Attributes.Entity;
 
 namespace IgniteList.Business.Services
 {
@@ -26,14 +26,14 @@ namespace IgniteList.Business.Services
         private readonly IApplicationDbContext _context;
         private readonly IgniteList.Business.Services.AuthorizationBusinessService _authorizationService;
         private readonly AuthenticationService _authenticationService;
-        private readonly SecurityBusinessService<UserExtended> _securityBusinessService;
+        private readonly SecurityBusinessService<User> _securityBusinessService;
         private readonly EmailingService _emailingService;
 
         public IgniteListBusinessService(
             IApplicationDbContext context,
             ExcelService excelService,
             IgniteList.Business.Services.AuthorizationBusinessService authorizationService,
-            SecurityBusinessService<UserExtended> securityBusinessService,
+            SecurityBusinessService<User> securityBusinessService,
             AuthenticationService authenticationService,
             EmailingService emailingService,
             IFileManager fileManager
@@ -52,18 +52,18 @@ namespace IgniteList.Business.Services
         /// <summary>
         /// IsDisabled is handled inside authorization service
         /// </summary>
-        protected override async Task OnBeforeSaveUserExtendedAndReturnSaveBodyDTO(UserExtendedSaveBodyDTO userExtendedSaveBodyDTO)
+        protected override async Task OnBeforeSaveUserAndReturnSaveBodyDTO(UserSaveBodyDTO userSaveBodyDTO)
         {
             await _context.WithTransactionAsync(async () =>
             {
-                if (userExtendedSaveBodyDTO.UserExtendedDTO.Id <= 0)
+                if (userSaveBodyDTO.UserDTO.Id <= 0)
                     throw new HackerException("You can't add new user.");
 
-                UserExtended userExtended = await GetInstanceAsync<UserExtended, long>(userExtendedSaveBodyDTO.UserExtendedDTO.Id, userExtendedSaveBodyDTO.UserExtendedDTO.Version);
+                User user = await GetInstanceAsync<User, long>(userSaveBodyDTO.UserDTO.Id, userSaveBodyDTO.UserDTO.Version);
 
-                if (userExtendedSaveBodyDTO.UserExtendedDTO.Email != userExtended.Email ||
-                    userExtendedSaveBodyDTO.UserExtendedDTO.HasLoggedInWithExternalProvider != userExtended.HasLoggedInWithExternalProvider
-                //userExtendedSaveBodyDTO.UserExtendedDTO.AccessedTheSystem != userExtended.AccessedTheSystem
+                if (userSaveBodyDTO.UserDTO.Email != user.Email ||
+                    userSaveBodyDTO.UserDTO.HasLoggedInWithExternalProvider != user.HasLoggedInWithExternalProvider
+                //userSaveBodyDTO.UserDTO.AccessedTheSystem != user.AccessedTheSystem
                 )
                 {
                     throw new HackerException("You can't change Email, HasLoggedInWithExternalProvider nor AccessedTheSystem from the main UI form.");
@@ -79,7 +79,7 @@ namespace IgniteList.Business.Services
         {
             await _context.WithTransactionAsync(async () =>
             {
-                await _authorizationService.AuthorizeAndThrowAsync<UserExtended>(BusinessPermissionCodes.UpdateNotification);
+                await _authorizationService.AuthorizeAndThrowAsync<User>(BusinessPermissionCodes.UpdateNotification);
 
                 // Checking version because if the user didn't save and some other user changed the version, he will send emails to wrong users
                 Notification notification = await GetInstanceAsync<Notification, long>(notificationId, notificationVersion);
@@ -156,9 +156,9 @@ namespace IgniteList.Business.Services
             });
         }
 
-        public async Task<TableResponseDTO<NotificationDTO>> GetNotificationsForCurrentUser(TableFilterDTO tableFilterDTO)
+        public async Task<PaginatedResultDTO<NotificationDTO>> GetNotificationsForCurrentUser(FilterDTO tableFilterDTO)
         {
-            TableResponseDTO<NotificationDTO> result = new();
+            PaginatedResultDTO<NotificationDTO> result = new();
             long currentUserId = _authenticationService.GetCurrentUserId(); // Not doing user.Notifications, because he could have a lot of them.
 
             await _context.WithTransactionAsync(async () =>
@@ -210,11 +210,11 @@ namespace IgniteList.Business.Services
 
         #region Project
 
-        public override async Task<TableResponseDTO<ProjectDTO>> GetProjectTableData(TableFilterDTO tableFilterPayload, IQueryable<Project> query, bool authorize)
+        public override async Task<PaginatedResultDTO<ProjectDTO>> GetPaginatedProjectList(FilterDTO filterDTO, IQueryable<Project> query, bool authorize)
         {
             return await _context.WithTransactionAsync(async () =>
             {
-                TableResponseDTO<ProjectDTO> projectTableData = await base.GetProjectTableData(tableFilterPayload, query, authorize);
+                PaginatedResultDTO<ProjectDTO> projectTableData = await base.GetPaginatedProjectList(filterDTO, query, authorize);
                 long currentUserId = _authenticationService.GetCurrentUserId();
                 foreach (ProjectDTO projectDTO in projectTableData.Data)
                 {
@@ -232,7 +232,7 @@ namespace IgniteList.Business.Services
         {
             await _context.WithTransactionAsync(async () =>
             {
-                UserExtended user = await _authenticationService.GetCurrentUser<UserExtended>();
+                User user = await _authenticationService.GetCurrentUser<User>();
                 Project project = await GetInstanceAsync<Project, long>(projectId, null);
 
                 Upvote existingUpvote = await _context.DbSet<Upvote>()
@@ -246,10 +246,14 @@ namespace IgniteList.Business.Services
                         User = user
                     };
                     await _context.DbSet<Upvote>().AddAsync(upvote);
+
+                    project.UpvoteCount++;
                 }
                 else
                 {
                     _context.DbSet<Upvote>().Remove(existingUpvote);
+
+                    project.UpvoteCount--;
                 }
 
                 await _context.SaveChangesAsync();
@@ -259,6 +263,7 @@ namespace IgniteList.Business.Services
         protected override Task OnBeforeSaveProjectAndReturnSaveBodyDTO(ProjectSaveBodyDTO saveBodyDTO)
         {
             saveBodyDTO.ProjectDTO.UserId = _authenticationService.GetCurrentUserId();
+
             return base.OnBeforeSaveProjectAndReturnSaveBodyDTO(saveBodyDTO);
         }
 

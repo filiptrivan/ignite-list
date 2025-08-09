@@ -4,9 +4,9 @@ begin transaction;
 
 use IgniteList
 
-insert into Permission(Name, Description, Code) values(N'View users', null, N'ReadUserExtended');
-insert into Permission(Name, Description, Code) values(N'Edit existing users', null, N'UpdateUserExtended');
-insert into Permission(Name, Description, Code) values(N'Delete users', null, N'DeleteUserExtended');
+insert into Permission(Name, Description, Code) values(N'View users', null, N'ReadUser');
+insert into Permission(Name, Description, Code) values(N'Edit existing users', null, N'UpdateUser');
+insert into Permission(Name, Description, Code) values(N'Delete users', null, N'DeleteUser');
 insert into Permission(Name, Description, Code) values(N'View notifications', null, N'ReadNotification');
 insert into Permission(Name, Description, Code) values(N'Edit existing notifications', null, N'UpdateNotification');
 insert into Permission(Name, Description, Code) values(N'Add new notifications', null, N'InsertNotification');

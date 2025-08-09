@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Azure.Storage.Blobs;
 using Spiderly.Shared.Attributes;
-using Spiderly.Shared.Attributes.EF.UI;
+using Spiderly.Shared.Attributes.Entity.UI;
 using Spiderly.Shared.Interfaces;
 using Spiderly.Shared.DTO;
 using IgniteList.Business.DTO;
@@ -65,7 +65,7 @@ namespace IgniteList.WebAPI.Controllers
 
         [HttpPost]
         [AuthGuard]
-        public async Task<TableResponseDTO<NotificationDTO>> GetNotificationsForCurrentUser(TableFilterDTO tableFilterDTO)
+        public async Task<PaginatedResultDTO<NotificationDTO>> GetNotificationsForCurrentUser(FilterDTO tableFilterDTO)
         {
             return await _igniteListBusinessService.GetNotificationsForCurrentUser(tableFilterDTO);
         }

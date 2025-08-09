@@ -17,17 +17,17 @@ namespace IgniteList.WebAPI.Controllers
 {
     [ApiController]
     [Route("/api/[controller]/[action]")]
-    public class SecurityController : SecurityBaseController<UserExtended>
+    public class SecurityController : SecurityBaseController<User>
     {
         private readonly ILogger<SecurityController> _logger;
-        private readonly SecurityBusinessService<UserExtended> _securityBusinessService;
+        private readonly SecurityBusinessService<User> _securityBusinessService;
         private readonly IApplicationDbContext _context;
         private readonly IgniteListBusinessService _igniteListBusinessService;
 
 
         public SecurityController(
             ILogger<SecurityController> logger, 
-            SecurityBusinessService<UserExtended> securityBusinessService, 
+            SecurityBusinessService<User> securityBusinessService, 
             IJwtAuthManager jwtAuthManagerService, 
             IApplicationDbContext context, 
             AuthenticationService authenticationService,

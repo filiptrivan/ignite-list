@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Spiderly.Shared.Attributes.Entity.UI;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,7 @@ namespace IgniteList.Business.DTO
 {
     public partial class ProjectDTO
     {
-        public bool HasUpvoted { get; set; }
+        [UIDoNotGenerate]
+        public bool? HasUpvoted { get; set; }
     }
 }

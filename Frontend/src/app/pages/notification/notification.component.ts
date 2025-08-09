@@ -6,7 +6,7 @@ import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
 import { Notification } from 'src/app/business/entities/business-entities.generated';
 import { Menu, MenuModule } from 'primeng/menu';
-import { TableResponse, TableFilter, SpiderlyMessageService, SpiderlyControlsModule } from 'spiderly';
+import { PaginatedResult, Filter, SpiderlyMessageService, SpiderlyControlsModule } from 'spiderly';
 
 @Component({
   templateUrl: './notification.component.html',
@@ -19,13 +19,13 @@ import { TableResponse, TableFilter, SpiderlyMessageService, SpiderlyControlsMod
 ],
 })
 export class NotificationComponent implements OnInit {
-  currentUserNotifications: TableResponse<Notification>;
+  currentUserNotifications: PaginatedResult<Notification>;
 
   crudMenu: MenuItem[] = [];
   @ViewChild('menu') menu: Menu;
   lastMenuToggledNotification: Notification;
 
-  tableFilter: TableFilter = new TableFilter({
+  tableFilter: Filter = new Filter({
     first: 0,
     rows: 10,
   });

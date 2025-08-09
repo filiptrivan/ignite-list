@@ -2,8 +2,8 @@
 
     <spiderly-data-table [tableTitle]="t('CategoryList')" 
     [cols]="cols" 
-    [getTableDataObservableMethod]="getCategoryTableDataObservableMethod" 
-    [exportTableDataToExcelObservableMethod]="exportCategoryTableDataToExcelObservableMethod"
+    [getPaginatedListObservableMethod]="getCategoryTableDataObservableMethod" 
+    [exportListToExcelObservableMethod]="exportCategoryTableDataToExcelObservableMethod"
     [deleteItemFromTableObservableMethod]="deleteCategoryObservableMethod"
     [showAddButton]="true"
     ></spiderly-data-table>

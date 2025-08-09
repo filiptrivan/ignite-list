@@ -57,6 +57,8 @@ export class ValidatorServiceGenerated {
                 return this.linkProjectValidator(formControl);
             case 'descriptionProject':
                 return this.descriptionProjectValidator(formControl);
+            case 'upvoteCountProject':
+                return this.upvoteCountProjectValidator(formControl);
             case 'userIdProject':
                 return this.userIdProjectValidator(formControl);
             case 'versionProject':
@@ -80,20 +82,20 @@ export class ValidatorServiceGenerated {
             case 'modifiedAtRole':
                 return this.modifiedAtRoleValidator(formControl);
 
-            case 'emailUserExtended':
-                return this.emailUserExtendedValidator(formControl);
-            case 'nameUserExtended':
-                return this.nameUserExtendedValidator(formControl);
-            case 'ageUserExtended':
-                return this.ageUserExtendedValidator(formControl);
-            case 'descriptionUserExtended':
-                return this.descriptionUserExtendedValidator(formControl);
-            case 'versionUserExtended':
-                return this.versionUserExtendedValidator(formControl);
-            case 'createdAtUserExtended':
-                return this.createdAtUserExtendedValidator(formControl);
-            case 'modifiedAtUserExtended':
-                return this.modifiedAtUserExtendedValidator(formControl);
+            case 'emailUser':
+                return this.emailUserValidator(formControl);
+            case 'nameUser':
+                return this.nameUserValidator(formControl);
+            case 'ageUser':
+                return this.ageUserValidator(formControl);
+            case 'descriptionUser':
+                return this.descriptionUserValidator(formControl);
+            case 'versionUser':
+                return this.versionUserValidator(formControl);
+            case 'createdAtUser':
+                return this.createdAtUserValidator(formControl);
+            case 'modifiedAtUser':
+                return this.modifiedAtUserValidator(formControl);
 
             case 'verificationCodeVerificationTokenRequest':
                 return this.verificationCodeVerificationTokenRequestValidator(formControl);
@@ -460,6 +462,23 @@ export class ValidatorServiceGenerated {
         return validator;
     }
 
+    upvoteCountProjectValidator = (control: SpiderlyFormControl): SpiderlyValidatorFn => {
+        const validator: SpiderlyValidatorFn = (): ValidationErrors | null => {
+            const value = control.value;
+
+            const notEmptyRule = typeof value !== 'undefined' && value !== null && value !== '';
+
+            const valid = notEmptyRule;
+
+            return valid ? null : { _ : this.translocoService.translate('NotEmpty', {}) };
+        };
+        validator.hasNotEmptyRule = true;
+        control.required = true;
+        control.validator = validator;
+
+        return validator;
+    }
+
     userIdProjectValidator = (control: SpiderlyFormControl): SpiderlyValidatorFn => {
         const validator: SpiderlyValidatorFn = (): ValidationErrors | null => {
             const value = control.value;
@@ -641,7 +660,7 @@ export class ValidatorServiceGenerated {
     }
 
 
-    emailUserExtendedValidator = (control: SpiderlyFormControl): SpiderlyValidatorFn => {
+    emailUserValidator = (control: SpiderlyFormControl): SpiderlyValidatorFn => {
         const validator: SpiderlyValidatorFn = (): ValidationErrors | null => {
             const value = control.value;
 
@@ -662,7 +681,7 @@ export class ValidatorServiceGenerated {
         return validator;
     }
 
-    nameUserExtendedValidator = (control: SpiderlyFormControl): SpiderlyValidatorFn => {
+    nameUserValidator = (control: SpiderlyFormControl): SpiderlyValidatorFn => {
         const validator: SpiderlyValidatorFn = (): ValidationErrors | null => {
             const value = control.value;
 
@@ -680,7 +699,7 @@ export class ValidatorServiceGenerated {
         return validator;
     }
 
-    ageUserExtendedValidator = (control: SpiderlyFormControl): SpiderlyValidatorFn => {
+    ageUserValidator = (control: SpiderlyFormControl): SpiderlyValidatorFn => {
         const validator: SpiderlyValidatorFn = (): ValidationErrors | null => {
             const value = control.value;
 
@@ -697,7 +716,7 @@ export class ValidatorServiceGenerated {
         return validator;
     }
 
-    descriptionUserExtendedValidator = (control: SpiderlyFormControl): SpiderlyValidatorFn => {
+    descriptionUserValidator = (control: SpiderlyFormControl): SpiderlyValidatorFn => {
         const validator: SpiderlyValidatorFn = (): ValidationErrors | null => {
             const value = control.value;
 
@@ -715,7 +734,7 @@ export class ValidatorServiceGenerated {
         return validator;
     }
 
-    versionUserExtendedValidator = (control: SpiderlyFormControl): SpiderlyValidatorFn => {
+    versionUserValidator = (control: SpiderlyFormControl): SpiderlyValidatorFn => {
         const validator: SpiderlyValidatorFn = (): ValidationErrors | null => {
             const value = control.value;
 
@@ -732,7 +751,7 @@ export class ValidatorServiceGenerated {
         return validator;
     }
 
-    createdAtUserExtendedValidator = (control: SpiderlyFormControl): SpiderlyValidatorFn => {
+    createdAtUserValidator = (control: SpiderlyFormControl): SpiderlyValidatorFn => {
         const validator: SpiderlyValidatorFn = (): ValidationErrors | null => {
             const value = control.value;
 
@@ -749,7 +768,7 @@ export class ValidatorServiceGenerated {
         return validator;
     }
 
-    modifiedAtUserExtendedValidator = (control: SpiderlyFormControl): SpiderlyValidatorFn => {
+    modifiedAtUserValidator = (control: SpiderlyFormControl): SpiderlyValidatorFn => {
         const validator: SpiderlyValidatorFn = (): ValidationErrors | null => {
             const value = control.value;
 

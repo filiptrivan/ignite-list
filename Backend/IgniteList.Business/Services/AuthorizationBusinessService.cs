@@ -24,37 +24,37 @@ namespace IgniteList.Business.Services
             _authenticationService = authenticationService;
         }
 
-        #region UserExtended
+        #region User
 
-        public override async Task AuthorizeUserExtendedReadAndThrow(long? userExtendedId)
+        public override async Task AuthorizeUserReadAndThrow(long? userId)
         {
             await _context.WithTransactionAsync(async () =>
             {
-                bool hasAdminReadPermission = await IsAuthorizedAsync<UserExtended>(BusinessPermissionCodes.ReadUserExtended);
-                bool isCurrentUser = _authenticationService.GetCurrentUserId() == userExtendedId;
+                bool hasAdminReadPermission = await IsAuthorizedAsync<User>(BusinessPermissionCodes.ReadUser);
+                bool isCurrentUser = _authenticationService.GetCurrentUserId() == userId;
 
                 if (isCurrentUser == false && hasAdminReadPermission == false)
                     throw new UnauthorizedException();
             });
         }
 
-        public override async Task AuthorizeUserExtendedUpdateAndThrow(UserExtendedDTO userExtendedDTO)
+        public override async Task AuthorizeUserUpdateAndThrow(UserDTO userDTO)
         {
             await _context.WithTransactionAsync(async () =>
             {
-                bool hasAdminUpdatePermission = await IsAuthorizedAsync<UserExtended>(BusinessPermissionCodes.UpdateUserExtended);
+                bool hasAdminUpdatePermission = await IsAuthorizedAsync<User>(BusinessPermissionCodes.UpdateUser);
                 if (hasAdminUpdatePermission)
                     return;
 
                 long currentUserId = _authenticationService.GetCurrentUserId();
-                if (currentUserId != userExtendedDTO.Id)
+                if (currentUserId != userDTO.Id)
                     throw new UnauthorizedException();
 
-                UserExtended userExtended = await GetInstanceAsync<UserExtended, long>(userExtendedDTO.Id, null);
+                User user = await GetInstanceAsync<User, long>(userDTO.Id, null);
 
                 if (
-                    userExtendedDTO.IsDisabled != userExtended.IsDisabled ||
-                    userExtendedDTO.HasLoggedInWithExternalProvider != userExtended.HasLoggedInWithExternalProvider
+                    userDTO.IsDisabled != user.IsDisabled ||
+                    userDTO.HasLoggedInWithExternalProvider != user.HasLoggedInWithExternalProvider
                 )
                 {
                     throw new UnauthorizedException();

@@ -12,8 +12,8 @@ import { Column, Role } from 'spiderly';
 export class RoleTableComponent implements OnInit {
     cols: Column<Role>[];
 
-    getRoleTableDataObservableMethod = this.apiService.getRoleTableData;
-    exportRoleTableDataToExcelObservableMethod = this.apiService.exportRoleTableDataToExcel;
+    getRoleTableDataObservableMethod = this.apiService.getPaginatedRoleList;
+    exportRoleTableDataToExcelObservableMethod = this.apiService.exportRoleListToExcel;
     deleteRoleObservableMethod = this.apiService.deleteRole;
 
     constructor(

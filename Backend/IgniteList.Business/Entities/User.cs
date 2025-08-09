@@ -2,9 +2,9 @@ using Microsoft.EntityFrameworkCore;
 using Spiderly.Security.Entities;
 using Spiderly.Security.Interfaces;
 using Spiderly.Shared.Attributes;
-using Spiderly.Shared.Attributes.EF;
-using Spiderly.Shared.Attributes.EF.Translation;
-using Spiderly.Shared.Attributes.EF.UI;
+using Spiderly.Shared.Attributes.Entity;
+using Spiderly.Shared.Attributes.Entity.Translation;
+using Spiderly.Shared.Attributes.Entity.UI;
 using Spiderly.Shared.BaseEntities;
 using Spiderly.Shared.Enums;
 using System.ComponentModel.DataAnnotations;
@@ -13,7 +13,7 @@ namespace IgniteList.Business.Entities
 {
     [Index(nameof(Email), IsUnique = true)]
     [DoNotAuthorize]
-    public class UserExtended : BusinessObject<long>, IUser
+    public class User : BusinessObject<long>, IUser
     {
         [UIDoNotGenerate]
         [UIControlWidth("col-12")]

@@ -5,10 +5,12 @@
         uojfhhirfz
         </panel-body>
     </spiderly-panel>
-    <user-extended-base-details [isLastMultiplePanel]="true"[panelTitle]="userExtendedFormGroup.getRawValue().email ?? null" panelIcon="pi pi-user"
-        [formGroup]="formGroup" [userExtendedFormGroup]="userExtendedFormGroup" (onSave)="onSave()"
-        [showIsDisabledForUserExtended]="showIsDisabledControl"
-        [showHasLoggedInWithExternalProviderForUserExtended]="showHasLoggedInWithExternalProvider"
+    <user-base-details [isLastMultiplePanel]="true"[panelTitle]="userFormGroup.getRawValue().email ?? null" panelIcon="pi pi-user"
+        [formGroup]="formGroup" 
+        [userFormGroup]="userFormGroup" 
+        (onSave)="onSave()"
+        [showIsDisabledForUser]="showIsDisabledControl"
+        [showHasLoggedInWithExternalProviderForUser]="showHasLoggedInWithExternalProvider"
         [showReturnButton]="false" [authorizedForSaveObservable]="authorizedForSaveObservable"
-        (onIsAuthorizedForSaveChange)="isAuthorizedForSaveChange($event)"></user-extended-base-details>
+        (onIsAuthorizedForSaveChange)="isAuthorizedForSaveChange($event)"></user-base-details>
 </ng-container>

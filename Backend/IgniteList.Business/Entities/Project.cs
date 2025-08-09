@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
-using Spiderly.Shared.Attributes.EF;
-using Spiderly.Shared.Attributes.EF.Translation;
-using Spiderly.Shared.Attributes.EF.UI;
+using Spiderly.Shared.Attributes.Entity;
+using Spiderly.Shared.Attributes.Entity.Translation;
+using Spiderly.Shared.Attributes.Entity.UI;
 using Spiderly.Shared.BaseEntities;
 using Spiderly.Shared.Enums;
 using System;
@@ -17,12 +17,12 @@ namespace IgniteList.Business.Entities
     public class Project : BusinessObject<long>
     {
         [BlobName]
-        [TranslateSingularEn("Logo")]
+        [TranslateEn("Logo")]
         public string LogoBlobName { get; set; }
 
         [StringLength(75, MinimumLength = 1)]
         [Required]
-        [TranslateSingularEn("Project Name")]
+        [TranslateEn("Project Name")]
         public string ProjectName { get; set; }
 
         [StringLength(100, MinimumLength = 1)]
@@ -32,19 +32,19 @@ namespace IgniteList.Business.Entities
         [StringLength(500, MinimumLength = 1)]
         public string Description { get; set; }
 
-        [ManyToOneRequired]
+        [Required]
+        public int UpvoteCount { get; set; }
+
+        [Required]
         [WithMany(nameof(User.Projects))]
         [UIControlType(nameof(UIControlTypeCodes.Dropdown))]
         [UIDoNotGenerate] 
-        public virtual UserExtended User { get; set; }
+        public virtual User User { get; set; }
 
-        public virtual List<UserExtended> UpvotedUsers { get; } = new();
+        public virtual List<User> UpvotedUsers { get; } = new();
 
         [UIControlType(nameof(UIControlTypeCodes.MultiSelect))]
-        [TranslateSingularEn("Select your categories")]
+        [TranslateEn("Select your categories")]
         public virtual List<Category> Categories { get; } = new();
-
-
-
     }
 }

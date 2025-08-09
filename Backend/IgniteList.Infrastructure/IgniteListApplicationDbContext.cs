@@ -4,7 +4,7 @@ using Spiderly.Infrastructure;
 
 namespace IgniteList.Infrastructure
 {
-    public partial class IgniteListApplicationDbContext : ApplicationDbContext<UserExtended> // https://stackoverflow.com/questions/41829229/how-do-i-implement-dbcontext-inheritance-for-multiple-databases-in-ef7-net-co
+    public partial class IgniteListApplicationDbContext : ApplicationDbContext<User> // https://stackoverflow.com/questions/41829229/how-do-i-implement-dbcontext-inheritance-for-multiple-databases-in-ef7-net-co
     {
         public IgniteListApplicationDbContext(DbContextOptions<IgniteListApplicationDbContext> options)
         : base(options)

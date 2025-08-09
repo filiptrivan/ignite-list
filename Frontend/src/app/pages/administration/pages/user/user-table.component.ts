@@ -12,9 +12,9 @@ import { Column } from 'spiderly';
 export class UserTableComponent implements OnInit {
     cols: Column[];
 
-    getUserTableDataObservableMethod = this.apiService.getUserExtendedTableData;
-    exportUserTableDataToExcelObservableMethod = this.apiService.exportUserExtendedTableDataToExcel;
-    deleteUserObservableMethod = this.apiService.deleteUserExtended;
+    getUserTableDataObservableMethod = this.apiService.getPaginatedUserList;
+    exportUserTableDataToExcelObservableMethod = this.apiService.exportUserListToExcel;
+    deleteUserObservableMethod = this.apiService.deleteUser;
 
     constructor(
         private apiService: ApiService,

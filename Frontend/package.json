@@ -12,7 +12,7 @@
     },
     "private": true,
     "dependencies": {
-        "spiderly": "19.0.9",
+        "spiderly": "19.2.0",
         "@abacritt/angularx-social-login": "2.2.0",
         "@angular/animations": "19.2.13",
         "@angular/common": "19.2.13",

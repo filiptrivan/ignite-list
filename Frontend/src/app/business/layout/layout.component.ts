@@ -64,7 +64,7 @@ export class LayoutComponent implements OnInit {
                         visible: true,
                         hasPermission: (permissionCodes: string[]): boolean => {
                             return (
-                                permissionCodes?.includes(BusinessPermissionCodes.ReadUserExtended) ||
+                                permissionCodes?.includes(BusinessPermissionCodes.ReadUser) ||
                                 permissionCodes?.includes(SecurityPermissionCodes.ReadRole) ||
                                 permissionCodes?.includes(BusinessPermissionCodes.ReadNotification)
                             )
@@ -76,7 +76,7 @@ export class LayoutComponent implements OnInit {
                                 routerLink: [`/${this.config.administrationSlug}/users`],
                                 hasPermission: (permissionCodes: string[]): boolean => {
                                     return (
-                                        permissionCodes?.includes(BusinessPermissionCodes.ReadUserExtended)
+                                        permissionCodes?.includes(BusinessPermissionCodes.ReadUser)
                                     )
                                 },
                                 visible: true,

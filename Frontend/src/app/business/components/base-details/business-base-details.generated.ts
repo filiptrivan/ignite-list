@@ -1,5 +1,6 @@
 import { ValidatorService } from 'src/app/business/services/validators/validators';
 import { DropdownChangeEvent } from 'primeng/dropdown';
+import { CheckboxChangeEvent } from 'primeng/checkbox';
 import { TranslateLabelsService } from '../../services/translates/merge-labels';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -11,15 +12,15 @@ import { ActivatedRoute } from '@angular/router';
 import { combineLatest, firstValueFrom, forkJoin, map, Observable, of, Subscription } from 'rxjs';
 import { MenuItem } from 'primeng/api';
 import { AuthService } from '../../services/auth/auth.service';
-import { SpiderlyControlsModule, CardSkeletonComponent, IndexCardComponent, IsAuthorizedForSaveEvent, SpiderlyDataTableComponent, SpiderlyFormArray, BaseEntity, LastMenuIconIndexClicked, SpiderlyFormGroup, SpiderlyButton, nameof, BaseFormService, getControl, Column, TableFilter, LazyLoadSelectedIdsResult, AllClickEvent, SpiderlyFileSelectEvent, getPrimengDropdownNamebookOptions, PrimengOption, SpiderlyFormControl, getPrimengAutocompleteNamebookOptions } from 'spiderly';
-import { Notification, NotificationSaveBody, Project, Category, ProjectCategory, Upvote, UserExtended, UserNotification, CategorySaveBody, ProjectSaveBody, ProjectCategorySaveBody, UpvoteSaveBody, UserExtendedSaveBody, UserNotificationSaveBody } from '../../entities/business-entities.generated';
+import { SpiderlyControlsModule, CardSkeletonComponent, IndexCardComponent, IsAuthorizedForSaveEvent, SpiderlyDataTableComponent, SpiderlyFormArray, BaseEntity, LastMenuIconIndexClicked, SpiderlyFormGroup, SpiderlyButton, nameof, BaseFormService, getControl, Column, Filter, LazyLoadSelectedIdsResult, AllClickEvent, SpiderlyFileSelectEvent, getPrimengDropdownNamebookOptions, PrimengOption, SpiderlyFormControl, getPrimengAutocompleteNamebookOptions } from 'spiderly';
+import { Notification, NotificationSaveBody, Project, Category, ProjectCategory, Upvote, User, UserNotification, CategorySaveBody, ProjectSaveBody, ProjectCategorySaveBody, UpvoteSaveBody, UserSaveBody, UserNotificationSaveBody } from '../../entities/business-entities.generated';
 
 @Component({
     selector: 'category-base-details',
     template: `
 <ng-container *transloco="let t">
     <spiderly-panel [isFirstMultiplePanel]="isFirstMultiplePanel" [isMiddleMultiplePanel]="isMiddleMultiplePanel" [isLastMultiplePanel]="isLastMultiplePanel" [showPanelHeader]="showPanelHeader" >
-        <panel-header [title]="panelTitle" [icon]="panelIcon"></panel-header>
+        <panel-header [title]="panelTitle" [showBigTitle]="showBigPanelTitle" [icon]="panelIcon"></panel-header>
 
         <panel-body>
             @defer (when loading === false) {
@@ -68,6 +69,7 @@ export class CategoryBaseDetailsComponent {
     @Input() isLastMultiplePanel: boolean = false;
     @Input() showPanelHeader: boolean = true;
     @Input() panelTitle: string;
+    @Input() showBigPanelTitle: boolean = true;
     @Input() panelIcon: string;
     @Input() showReturnButton: boolean = true;
     authorizationForSaveSubscription: Subscription;
@@ -221,7 +223,7 @@ export class CategoryBaseDetailsComponent {
     template: `
 <ng-container *transloco="let t">
     <spiderly-panel [isFirstMultiplePanel]="isFirstMultiplePanel" [isMiddleMultiplePanel]="isMiddleMultiplePanel" [isLastMultiplePanel]="isLastMultiplePanel" [showPanelHeader]="showPanelHeader" >
-        <panel-header [title]="panelTitle" [icon]="panelIcon"></panel-header>
+        <panel-header [title]="panelTitle" [showBigTitle]="showBigPanelTitle" [icon]="panelIcon"></panel-header>
 
         <panel-body>
             @defer (when loading === false) {
@@ -240,8 +242,8 @@ export class CategoryBaseDetailsComponent {
                         <spiderly-data-table 
                             [tableTitle]="t('Recipients')" 
                             [cols]="recipientsTableColsForNotification" 
-                            [getTableDataObservableMethod]="getRecipientsTableDataObservableMethodForNotification" 
-                            [exportTableDataToExcelObservableMethod]="exportRecipientsTableDataToExcelObservableMethodForNotification"
+                            [getPaginatedListObservableMethod]="getPaginatedRecipientsListObservableMethodForNotification" 
+                            [exportListToExcelObservableMethod]="exportRecipientsListToExcelObservableMethodForNotification"
                             [showAddButton]="false" 
                             [readonly]="!isAuthorizedForSave"
                             selectionMode="multiple"
@@ -292,6 +294,7 @@ export class NotificationBaseDetailsComponent {
     @Input() isLastMultiplePanel: boolean = false;
     @Input() showPanelHeader: boolean = true;
     @Input() panelTitle: string;
+    @Input() showBigPanelTitle: boolean = true;
     @Input() panelIcon: string;
     @Input() showReturnButton: boolean = true;
     authorizationForSaveSubscription: Subscription;
@@ -310,13 +313,13 @@ export class NotificationBaseDetailsComponent {
 
 
 
-    recipientsTableColsForNotification: Column<UserExtended>[];
-    getRecipientsTableDataObservableMethodForNotification = this.apiService.getRecipientsTableDataForNotification;
-    exportRecipientsTableDataToExcelObservableMethodForNotification = this.apiService.exportRecipientsTableDataToExcelForNotification;
+    recipientsTableColsForNotification: Column<User>[];
+    getPaginatedRecipientsListObservableMethodForNotification = this.apiService.getPaginatedRecipientsListForNotification;
+    exportRecipientsListToExcelObservableMethodForNotification = this.apiService.exportRecipientsListToExcelForNotification;
     newlySelectedRecipientsIdsForNotification: number[] = [];
     unselectedRecipientsIdsForNotification: number[] = [];
     areAllRecipientsSelectedForNotification: boolean = null;
-    lastRecipientsLazyLoadTableFilterForNotification: TableFilter;
+    lastRecipientsLazyLoadTableFilterForNotification: Filter;
 
     @Input() showTitleForNotification = true;
     @Input() showDescriptionForNotification = true;
@@ -433,16 +436,16 @@ export class NotificationBaseDetailsComponent {
 
 
 
-    selectedRecipientsLazyLoadMethodForNotification = (event: TableFilter): Observable<LazyLoadSelectedIdsResult> => {
-        let tableFilter: TableFilter = event;
-        tableFilter.additionalFilterIdLong = this.modelId;
+    selectedRecipientsLazyLoadMethodForNotification = (event: Filter): Observable<LazyLoadSelectedIdsResult> => {
+        let filter: Filter = event;
+        filter.additionalFilterIdLong = this.modelId;
 
-        return this.apiService.lazyLoadSelectedRecipientsIdsForNotification(tableFilter);
+        return this.apiService.lazyLoadSelectedRecipientsIdsForNotification(filter);
     }
     areAllRecipientsSelectedChangeForNotification(event: AllClickEvent){
         this.areAllRecipientsSelectedForNotification = event.checked;
     }
-    onRecipientsLazyLoadForNotification(event: TableFilter){
+    onRecipientsLazyLoadForNotification(event: Filter){
         this.lastRecipientsLazyLoadTableFilterForNotification = event;
     }
 
@@ -475,7 +478,7 @@ export class NotificationBaseDetailsComponent {
     template: `
 <ng-container *transloco="let t">
     <spiderly-panel [isFirstMultiplePanel]="isFirstMultiplePanel" [isMiddleMultiplePanel]="isMiddleMultiplePanel" [isLastMultiplePanel]="isLastMultiplePanel" [showPanelHeader]="showPanelHeader" >
-        <panel-header [title]="panelTitle" [icon]="panelIcon"></panel-header>
+        <panel-header [title]="panelTitle" [showBigTitle]="showBigPanelTitle" [icon]="panelIcon"></panel-header>
 
         <panel-body>
             @defer (when loading === false) {
@@ -490,11 +493,11 @@ export class NotificationBaseDetailsComponent {
                     <div *ngIf="showLinkForProject" class="col-12 md:col-6">
                         <spiderly-textbox [control]="control('link', projectFormGroup)"></spiderly-textbox>
                     </div>
+                    <div *ngIf="showUpvoteCountForProject" class="col-12 md:col-6">
+                        <spiderly-number [control]="control('upvoteCount', projectFormGroup)"></spiderly-number>
+                    </div>
                     <div *ngIf="showCategoriesForProject" class="col-12">
                         <spiderly-multiselect [control]="selectedCategoriesForProject" [options]="categoriesOptionsForProject" [label]="t('Categories')"></spiderly-multiselect>
-                    </div>
-                    <div *ngIf="showHasUpvotedForProjectDTO" class="col-12 md:col-6">
-                        <spiderly-checkbox [control]="control('hasUpvoted', projectFormGroup)"></spiderly-checkbox>
                     </div>
                     <div *ngIf="showDescriptionForProject" class="col-12">
                         <spiderly-textarea [control]="control('description', projectFormGroup)"></spiderly-textarea>
@@ -539,6 +542,7 @@ export class ProjectBaseDetailsComponent {
     @Input() isLastMultiplePanel: boolean = false;
     @Input() showPanelHeader: boolean = true;
     @Input() panelTitle: string;
+    @Input() showBigPanelTitle: boolean = true;
     @Input() panelIcon: string;
     @Input() showReturnButton: boolean = true;
     authorizationForSaveSubscription: Subscription;
@@ -562,8 +566,8 @@ export class ProjectBaseDetailsComponent {
     @Input() showLogoBlobNameForProject = true;
     @Input() showProjectNameForProject = true;
     @Input() showLinkForProject = true;
+    @Input() showUpvoteCountForProject = true;
     @Input() showCategoriesForProject = true;
-    @Input() showHasUpvotedForProjectDTO = true;
     @Input() showDescriptionForProject = true;
 
 
@@ -652,8 +656,8 @@ export class ProjectBaseDetailsComponent {
                         this.projectFormGroup.controls.logoBlobName.enable();
                         this.projectFormGroup.controls.projectName.enable();
                         this.projectFormGroup.controls.link.enable();
+                        this.projectFormGroup.controls.upvoteCount.enable();
                         this.selectedCategoriesForProject.enable();
-                        this.projectFormGroup.controls.hasUpvoted.enable();
                         this.projectFormGroup.controls.description.enable();
 
                     }
@@ -661,8 +665,8 @@ export class ProjectBaseDetailsComponent {
                         this.projectFormGroup.controls.logoBlobName.disable();
                         this.projectFormGroup.controls.projectName.disable();
                         this.projectFormGroup.controls.link.disable();
+                        this.projectFormGroup.controls.upvoteCount.disable();
                         this.selectedCategoriesForProject.disable();
-                        this.projectFormGroup.controls.hasUpvoted.disable();
                         this.projectFormGroup.controls.description.disable();
 
                     }
@@ -711,30 +715,30 @@ export class ProjectBaseDetailsComponent {
 }
 
 @Component({
-    selector: 'user-extended-base-details',
+    selector: 'user-base-details',
     template: `
 <ng-container *transloco="let t">
     <spiderly-panel [isFirstMultiplePanel]="isFirstMultiplePanel" [isMiddleMultiplePanel]="isMiddleMultiplePanel" [isLastMultiplePanel]="isLastMultiplePanel" [showPanelHeader]="showPanelHeader" >
-        <panel-header [title]="panelTitle" [icon]="panelIcon"></panel-header>
+        <panel-header [title]="panelTitle" [showBigTitle]="showBigPanelTitle" [icon]="panelIcon"></panel-header>
 
         <panel-body>
             @defer (when loading === false) {
                 <form class="grid">
                     <ng-content select="[BEFORE]"></ng-content>
-                    <div *ngIf="showNameForUserExtended" class="col-12 md:col-6">
-                        <spiderly-textbox [control]="control('name', userExtendedFormGroup)"></spiderly-textbox>
+                    <div *ngIf="showNameForUser" class="col-12 md:col-6">
+                        <spiderly-textbox [control]="control('name', userFormGroup)"></spiderly-textbox>
                     </div>
-                    <div *ngIf="showAgeForUserExtended" class="col-12 md:col-6">
-                        <spiderly-number [control]="control('age', userExtendedFormGroup)"></spiderly-number>
+                    <div *ngIf="showAgeForUser" class="col-12 md:col-6">
+                        <spiderly-number [control]="control('age', userFormGroup)"></spiderly-number>
                     </div>
-                    <div *ngIf="showHasLoggedInWithExternalProviderForUserExtended" class="col-12 md:col-6">
-                        <spiderly-checkbox [control]="control('hasLoggedInWithExternalProvider', userExtendedFormGroup)"></spiderly-checkbox>
+                    <div *ngIf="showHasLoggedInWithExternalProviderForUser" class="col-12 md:col-6">
+                        <spiderly-checkbox [control]="control('hasLoggedInWithExternalProvider', userFormGroup)" (onChange)="onHasLoggedInWithExternalProviderForUserChange.next($event)"></spiderly-checkbox>
                     </div>
-                    <div *ngIf="showIsDisabledForUserExtended" class="col-12 md:col-6">
-                        <spiderly-checkbox [control]="control('isDisabled', userExtendedFormGroup)"></spiderly-checkbox>
+                    <div *ngIf="showIsDisabledForUser" class="col-12 md:col-6">
+                        <spiderly-checkbox [control]="control('isDisabled', userFormGroup)" (onChange)="onIsDisabledForUserChange.next($event)"></spiderly-checkbox>
                     </div>
-                    <div *ngIf="showDescriptionForUserExtended" class="col-12">
-                        <spiderly-textarea [control]="control('description', userExtendedFormGroup)"></spiderly-textarea>
+                    <div *ngIf="showDescriptionForUser" class="col-12">
+                        <spiderly-textarea [control]="control('description', userFormGroup)"></spiderly-textarea>
                     </div>
                     <ng-content select="[AFTER]"></ng-content>
                 </form>
@@ -764,18 +768,19 @@ export class ProjectBaseDetailsComponent {
         SpiderlyDataTableComponent,
     ]
 })
-export class UserExtendedBaseDetailsComponent {
+export class UserBaseDetailsComponent {
     @Output() onSave = new EventEmitter<void>();
     @Output() onAfterFormGroupInit = new EventEmitter<void>();
     @Input() getCrudMenuForOrderedData: (formArray: SpiderlyFormArray, modelConstructor: BaseEntity, lastMenuIconIndexClicked: LastMenuIconIndexClicked, adjustFormArrayManually: boolean) => MenuItem[];
     @Input() formGroup: SpiderlyFormGroup;
-    @Input() userExtendedFormGroup: SpiderlyFormGroup<UserExtended>;
+    @Input() userFormGroup: SpiderlyFormGroup<User>;
     @Input() additionalButtons: SpiderlyButton[] = [];
     @Input() isFirstMultiplePanel: boolean = false;
     @Input() isMiddleMultiplePanel: boolean = false;
     @Input() isLastMultiplePanel: boolean = false;
     @Input() showPanelHeader: boolean = true;
     @Input() panelTitle: string;
+    @Input() showBigPanelTitle: boolean = true;
     @Input() panelIcon: string;
     @Input() showReturnButton: boolean = true;
     authorizationForSaveSubscription: Subscription;
@@ -786,7 +791,7 @@ export class UserExtendedBaseDetailsComponent {
     modelId: number;
     loading: boolean = true;
 
-    userExtendedSaveBodyName: string = nameof<UserExtendedSaveBody>('userExtendedDTO');
+    userSaveBodyName: string = nameof<UserSaveBody>('userDTO');
 
 
 
@@ -796,13 +801,15 @@ export class UserExtendedBaseDetailsComponent {
 
 
 
-    @Input() showNameForUserExtended = true;
-    @Input() showAgeForUserExtended = true;
-    @Input() showHasLoggedInWithExternalProviderForUserExtended = true;
-    @Input() showIsDisabledForUserExtended = true;
-    @Input() showDescriptionForUserExtended = true;
+    @Input() showNameForUser = true;
+    @Input() showAgeForUser = true;
+    @Input() showHasLoggedInWithExternalProviderForUser = true;
+    @Input() showIsDisabledForUser = true;
+    @Input() showDescriptionForUser = true;
 
 
+    @Output() onHasLoggedInWithExternalProviderForUserChange = new EventEmitter<CheckboxChangeEvent>();
+    @Output() onIsDisabledForUserChange = new EventEmitter<CheckboxChangeEvent>();
 
 
     constructor(
@@ -817,8 +824,8 @@ export class UserExtendedBaseDetailsComponent {
 
     ngOnInit(){
         this.formGroup.initSaveBody = () => { 
-            let saveBody = new UserExtendedSaveBody();
-            saveBody.userExtendedDTO = this.userExtendedFormGroup.getRawValue();
+            let saveBody = new UserSaveBody();
+            saveBody.userDTO = this.userFormGroup.getRawValue();
 
 
 
@@ -826,8 +833,8 @@ export class UserExtendedBaseDetailsComponent {
             return saveBody;
         }
 
-        this.formGroup.saveObservableMethod = this.apiService.saveUserExtended;
-        this.formGroup.mainDTOName = this.userExtendedSaveBodyName;
+        this.formGroup.saveObservableMethod = this.apiService.saveUser;
+        this.formGroup.mainDTOName = this.userSaveBodyName;
 
         this.route.params.subscribe(async (params) => {
             this.modelId = params['id'];
@@ -837,10 +844,10 @@ export class UserExtendedBaseDetailsComponent {
 
             if(this.modelId > 0){
                 forkJoin({
-                    mainUIFormDTO: this.apiService.getUserExtendedMainUIFormDTO(this.modelId),
+                    mainUIFormDTO: this.apiService.getUserMainUIFormDTO(this.modelId),
                 })
                 .subscribe(({ mainUIFormDTO }) => {
-                    this.initUserExtendedFormGroup(new UserExtended(mainUIFormDTO.userExtendedDTO));
+                    this.initUserFormGroup(new User(mainUIFormDTO.userDTO));
 
 
 
@@ -849,7 +856,7 @@ export class UserExtendedBaseDetailsComponent {
                 });
             }
             else{
-                this.initUserExtendedFormGroup(new UserExtended({id: 0}));
+                this.initUserFormGroup(new User({id: 0}));
 
                 this.authorizationForSaveSubscription = this.handleAuthorizationForSave().subscribe();
                 this.loading = false;
@@ -857,15 +864,15 @@ export class UserExtendedBaseDetailsComponent {
         });
     }
 
-    initUserExtendedFormGroup(userExtended: UserExtended) {
-        this.baseFormService.addFormGroup<UserExtended>(
-            this.userExtendedFormGroup, 
+    initUserFormGroup(user: User) {
+        this.baseFormService.addFormGroup<User>(
+            this.userFormGroup, 
             this.formGroup, 
-            userExtended, 
-            this.userExtendedSaveBodyName,
+            user, 
+            this.userSaveBodyName,
             ['createdAt', 'modifiedAt']
         );
-        this.userExtendedFormGroup.mainDTOName = this.userExtendedSaveBodyName;
+        this.userFormGroup.mainDTOName = this.userSaveBodyName;
 
         this.onAfterFormGroupInit.next();
     }
@@ -876,24 +883,24 @@ export class UserExtendedBaseDetailsComponent {
                 if (currentUserPermissionCodes != null && isAuthorizedForSave != null) {
                     this.isAuthorizedForSave =
 
-                        (currentUserPermissionCodes.includes('InsertUserExtended') && this.modelId <= 0) || 
-                        (currentUserPermissionCodes.includes('UpdateUserExtended') && this.modelId > 0) ||
+                        (currentUserPermissionCodes.includes('InsertUser') && this.modelId <= 0) || 
+                        (currentUserPermissionCodes.includes('UpdateUser') && this.modelId > 0) ||
                         isAuthorizedForSave;
 
                     if (this.isAuthorizedForSave) { 
-                        this.userExtendedFormGroup.controls.name.enable();
-                        this.userExtendedFormGroup.controls.age.enable();
-                        this.userExtendedFormGroup.controls.hasLoggedInWithExternalProvider.enable();
-                        this.userExtendedFormGroup.controls.isDisabled.enable();
-                        this.userExtendedFormGroup.controls.description.enable();
+                        this.userFormGroup.controls.name.enable();
+                        this.userFormGroup.controls.age.enable();
+                        this.userFormGroup.controls.hasLoggedInWithExternalProvider.enable();
+                        this.userFormGroup.controls.isDisabled.enable();
+                        this.userFormGroup.controls.description.enable();
 
                     }
                     else{
-                        this.userExtendedFormGroup.controls.name.disable();
-                        this.userExtendedFormGroup.controls.age.disable();
-                        this.userExtendedFormGroup.controls.hasLoggedInWithExternalProvider.disable();
-                        this.userExtendedFormGroup.controls.isDisabled.disable();
-                        this.userExtendedFormGroup.controls.description.disable();
+                        this.userFormGroup.controls.name.disable();
+                        this.userFormGroup.controls.age.disable();
+                        this.userFormGroup.controls.hasLoggedInWithExternalProvider.disable();
+                        this.userFormGroup.controls.isDisabled.disable();
+                        this.userFormGroup.controls.description.disable();
 
                     }
 

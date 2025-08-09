@@ -1,4 +1,4 @@
-﻿using Spiderly.Shared.Attributes.EF;
+﻿using Spiderly.Shared.Attributes.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,12 +7,13 @@ using System.Threading.Tasks;
 
 namespace IgniteList.Business.Entities
 {
+    [M2M]
     public class ProjectCategory
     {
-        [M2MMaintanceEntity(nameof(Project.Categories))]
+        [M2MWithMany(nameof(Project.Categories))]
         public virtual Project Project { get; set; }
 
-        [M2MEntity(nameof(Category.Projects))]
+        [M2MWithMany(nameof(Category.Projects))]
         public virtual Category Category { get; set; }
     }
 }

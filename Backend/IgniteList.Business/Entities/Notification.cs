@@ -1,5 +1,5 @@
-using Spiderly.Shared.Attributes.EF;
-using Spiderly.Shared.Attributes.EF.UI;
+using Spiderly.Shared.Attributes.Entity;
+using Spiderly.Shared.Attributes.Entity.UI;
 using Spiderly.Shared.BaseEntities;
 using Spiderly.Shared.Enums;
 using System.ComponentModel.DataAnnotations;
@@ -8,7 +8,7 @@ using IgniteList.Business.DTO;
 
 namespace IgniteList.Business.Entities
 {
-    public class Notification : BusinessObject<long>, INotification<UserExtended>
+    public class Notification : BusinessObject<long>, INotification<User>
     {
         [UIControlWidth("col-12")]
         [DisplayName]
@@ -26,10 +26,10 @@ namespace IgniteList.Business.Entities
         public string EmailBody { get; set; }
 
         #region UITableColumn
-        [UITableColumn(nameof(UserExtendedDTO.Email))]
-        [UITableColumn(nameof(UserExtendedDTO.CreatedAt))]
+        [UITableColumn(nameof(UserDTO.Email))]
+        [UITableColumn(nameof(UserDTO.CreatedAt))]
         #endregion
         [SimpleManyToManyTableLazyLoad]
-        public virtual List<UserExtended> Recipients { get; } = new(); // M2M
+        public virtual List<User> Recipients { get; } = new(); // M2M
     }
 }

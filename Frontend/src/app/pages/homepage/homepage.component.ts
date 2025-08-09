@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { TranslocoDirective, TranslocoService } from '@jsverse/transloco';
-import { DataViewCardBody, Filter, getHtmlImgDisplayString64, SpiderlyControlsModule, SpiderlyDataViewComponent, SpiderlyTemplateTypeDirective } from 'spiderly';
-import { Category, Project } from 'src/app/business/entities/business-entities.generated';
+import { TranslocoService } from '@jsverse/transloco';
+import { DataViewCardBody, DataViewFilter, getHtmlImgDisplayString64, SpiderlyControlsModule, SpiderlyDataViewComponent, SpiderlyTemplateTypeDirective } from 'spiderly';
+import { Project } from 'src/app/business/entities/business-entities.generated';
 import { ApiService } from 'src/app/business/services/api/api.service';
 import { ButtonModule } from 'primeng/button';
 
@@ -9,7 +9,6 @@ import { ButtonModule } from 'primeng/button';
   templateUrl: './homepage.component.html',
   styleUrl: './homepage.component.scss',
   imports: [
-    TranslocoDirective,
     SpiderlyDataViewComponent,
     SpiderlyTemplateTypeDirective,
     SpiderlyControlsModule,
@@ -19,9 +18,9 @@ import { ButtonModule } from 'primeng/button';
 })
 export class HomepageComponent implements OnInit {
   templateType?: DataViewCardBody<Project>;
-  filters: Filter<Project>[];
+  filters: DataViewFilter<Project>[];
 
-  getProjectTableDataObservableMethod = this.apiService.getProjectTableData;
+  getProjectTableDataObservableMethod = this.apiService.getPaginatedProjectList;
 
   constructor(
     private apiService: ApiService,
@@ -30,8 +29,8 @@ export class HomepageComponent implements OnInit {
 
   ngOnInit() {
     this.filters = [
-      { name: this.translocoService.translate('Name'), filterType: 'text', field: 'projectName' },
-      { name: this.translocoService.translate('CreatedAt'), filterType: 'date', field: 'createdAt', showMatchModes: true },
+      { label: this.translocoService.translate('Name'), type: 'text', field: 'projectName' },
+      { label: this.translocoService.translate('CreatedAt'), type: 'date', field: 'createdAt', showMatchModes: true },
     ]
   }
   upvote(projectDTO: Project) {

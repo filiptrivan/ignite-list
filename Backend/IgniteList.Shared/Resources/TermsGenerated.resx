@@ -145,6 +145,9 @@
   <data name="Link" xml:space="preserve">
     <value />
   </data>
+  <data name="UpvoteCount" xml:space="preserve">
+    <value />
+  </data>
   <data name="User" xml:space="preserve">
     <value />
   </data>
@@ -193,13 +196,10 @@
   <data name="UpvoteExcelExportName" xml:space="preserve">
     <value />
   </data>
-  <data name="UserExtended" xml:space="preserve">
+  <data name="UserList" xml:space="preserve">
     <value />
   </data>
-  <data name="UserExtendedList" xml:space="preserve">
-    <value />
-  </data>
-  <data name="UserExtendedExcelExportName" xml:space="preserve">
+  <data name="UserExcelExportName" xml:space="preserve">
     <value />
   </data>
   <data name="Email" xml:space="preserve">

@@ -34,6 +34,12 @@ export class TranslateClassNamesGeneratedService {
                 return this.translocoService.translate('ExcelReportOptions');
             case 'ExternalProvider':
                 return this.translocoService.translate('ExternalProvider');
+            case 'Filter':
+                return this.translocoService.translate('Filter');
+            case 'FilterRule':
+                return this.translocoService.translate('FilterRule');
+            case 'FilterSortMeta':
+                return this.translocoService.translate('FilterSortMeta');
             case 'JwtAuthResult':
                 return this.translocoService.translate('JwtAuthResult');
             case 'LazyLoadSelectedIdsResult':
@@ -50,8 +56,8 @@ export class TranslateClassNamesGeneratedService {
                 return this.translocoService.translate('NotificationMainUIForm');
             case 'NotificationSaveBody':
                 return this.translocoService.translate('NotificationSaveBody');
-            case 'PaginationResult':
-                return this.translocoService.translate('PaginationResult');
+            case 'PaginatedResult':
+                return this.translocoService.translate('PaginatedResult');
             case 'Permission':
                 return this.translocoService.translate('Permission');
             case 'PermissionMainUIForm':
@@ -96,28 +102,18 @@ export class TranslateClassNamesGeneratedService {
                 return this.translocoService.translate('RoleSaveBody');
             case 'SimpleSaveResult':
                 return this.translocoService.translate('SimpleSaveResult');
-            case 'TableFilterContext':
-                return this.translocoService.translate('TableFilterContext');
-            case 'TableFilter':
-                return this.translocoService.translate('TableFilter');
-            case 'TableFilterSortMeta':
-                return this.translocoService.translate('TableFilterSortMeta');
-            case 'TableResponse':
-                return this.translocoService.translate('TableResponse');
             case 'Upvote':
                 return this.translocoService.translate('Upvote');
             case 'UpvoteMainUIForm':
                 return this.translocoService.translate('UpvoteMainUIForm');
             case 'UpvoteSaveBody':
                 return this.translocoService.translate('UpvoteSaveBody');
+            case 'UserBase':
+                return this.translocoService.translate('UserBase');
             case 'User':
                 return this.translocoService.translate('User');
-            case 'UserExtended':
-                return this.translocoService.translate('UserExtended');
-            case 'UserExtendedMainUIForm':
-                return this.translocoService.translate('UserExtendedMainUIForm');
-            case 'UserExtendedSaveBody':
-                return this.translocoService.translate('UserExtendedSaveBody');
+            case 'UserMainUIForm':
+                return this.translocoService.translate('UserMainUIForm');
             case 'UserNotification':
                 return this.translocoService.translate('UserNotification');
             case 'UserNotificationMainUIForm':
@@ -130,6 +126,8 @@ export class TranslateClassNamesGeneratedService {
                 return this.translocoService.translate('UserRoleMainUIForm');
             case 'UserRoleSaveBody':
                 return this.translocoService.translate('UserRoleSaveBody');
+            case 'UserSaveBody':
+                return this.translocoService.translate('UserSaveBody');
             case 'VerificationTokenRequest':
                 return this.translocoService.translate('VerificationTokenRequest');
             default:

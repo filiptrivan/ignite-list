@@ -2,8 +2,8 @@
 
     <spiderly-data-table [tableTitle]="t('ProjectList')" 
     [cols]="cols" 
-    [getTableDataObservableMethod]="getProjectTableDataObservableMethod" 
-    [exportTableDataToExcelObservableMethod]="exportProjectTableDataToExcelObservableMethod"
+    [getPaginatedListObservableMethod]="getProjectTableDataObservableMethod" 
+    [exportListToExcelObservableMethod]="exportProjectTableDataToExcelObservableMethod"
     [deleteItemFromTableObservableMethod]="deleteProjectObservableMethod"
     [showAddButton]="true"
     ></spiderly-data-table>

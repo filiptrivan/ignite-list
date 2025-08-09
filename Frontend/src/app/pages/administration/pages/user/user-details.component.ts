@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { ChangeDetectorRef, Component, KeyValueDiffers, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslocoService } from '@jsverse/transloco';
-import { UserExtended } from 'src/app/business/entities/business-entities.generated';
+import { User } from 'src/app/business/entities/business-entities.generated';
 import { BaseFormCopy, SpiderlyFormGroup, SpiderlyMessageService, BaseFormService, IsAuthorizedForSaveEvent } from 'spiderly';
 import { AuthService } from 'src/app/business/services/auth/auth.service';
 import { combineLatest, delay, map, Observable } from 'rxjs';
@@ -15,7 +15,7 @@ import { BusinessPermissionCodes } from 'src/app/business/enums/business-enums.g
     standalone: false,
 })
 export class UserDetailsComponent extends BaseFormCopy implements OnInit {
-    userExtendedFormGroup = new SpiderlyFormGroup<UserExtended>({});
+    userFormGroup = new SpiderlyFormGroup<User>({});
 
     showIsDisabledControl: boolean = false;
     showHasLoggedInWithExternalProvider: boolean = false;
@@ -57,18 +57,18 @@ export class UserDetailsComponent extends BaseFormCopy implements OnInit {
     }
 
     showIsDisabledAndExternalLoggedInControlsForPermissions = (currentUserPermissionCodes: string[]) => {
-        return currentUserPermissionCodes.includes(BusinessPermissionCodes.ReadUserExtended) ||
-               currentUserPermissionCodes.includes(BusinessPermissionCodes.UpdateUserExtended);
+        return currentUserPermissionCodes.includes(BusinessPermissionCodes.ReadUser) ||
+               currentUserPermissionCodes.includes(BusinessPermissionCodes.UpdateUser);
     }
 
     isCurrentUserPage = (currentUserId: number) => {
-        return currentUserId === this.userExtendedFormGroup.getRawValue().id;
+        return currentUserId === this.userFormGroup.getRawValue().id;
     }
 
     isAuthorizedForSaveChange = (event: IsAuthorizedForSaveEvent) => {
         this.isAuthorizedForSave = event.isAuthorizedForSave;
 
-        this.userExtendedFormGroup.controls.hasLoggedInWithExternalProvider.disable();
+        this.userFormGroup.controls.hasLoggedInWithExternalProvider.disable();
     }
 
     override onBeforeSave = (): void => {

@@ -1,14 +1,15 @@
-using Spiderly.Shared.Attributes.EF;
+using Spiderly.Shared.Attributes.Entity;
 
 namespace IgniteList.Business.Entities
 {
+    [M2M]
     public class UserNotification 
     {
-        [M2MMaintanceEntity(nameof(Notification.Recipients))]
+        [M2MWithMany(nameof(Notification.Recipients))]
         public virtual Notification Notification { get; set; }
 
-        [M2MEntity(nameof(User.Notifications))]
-        public virtual UserExtended User { get; set; }
+        [M2MWithMany(nameof(User.Notifications))]
+        public virtual User User { get; set; }
 
         public bool IsMarkedAsRead { get; set; }
     }

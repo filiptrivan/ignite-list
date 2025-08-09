@@ -5,7 +5,6 @@ using Spiderly.Security.Services;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Mvc;
 using Spiderly.Shared.Emailing;
-using IgniteList.Business.Services;
 using IgniteList.Business.Entities;
 using IgniteList.Shared.FluentValidation;
 using Spiderly.Shared.Interfaces;
@@ -20,13 +19,13 @@ namespace IgniteList.WebAPI.DI
             // Framework
             registry.Register<AuthenticationService>();
             registry.Register<AuthorizationService>();
-            registry.Register<SecurityBusinessService<UserExtended>>();
-            registry.Register<Spiderly.Security.Services.BusinessServiceGenerated<UserExtended>>();
-            registry.Register<Spiderly.Security.Services.AuthorizationBusinessService<UserExtended>>();
-            registry.Register<Spiderly.Security.Services.AuthorizationBusinessServiceGenerated<UserExtended>>();
+            registry.Register<SecurityBusinessService<User>>();
+            registry.Register<Spiderly.Security.Services.BusinessServiceGenerated<User>>();
+            registry.Register<Spiderly.Security.Services.AuthorizationBusinessService<User>>();
+            registry.Register<Spiderly.Security.Services.AuthorizationBusinessServiceGenerated<User>>();
             registry.Register<ExcelService>();
             registry.Register<EmailingService>();
-            registry.Register<IFileManager, BlobStorageService>();
+            registry.Register<IFileManager, DiskStorageService>();
             registry.RegisterSingleton<IConfigureOptions<MvcOptions>, TranslatePropertiesConfiguration>();
             registry.RegisterSingleton<IJwtAuthManager, JwtAuthManagerService>();
 

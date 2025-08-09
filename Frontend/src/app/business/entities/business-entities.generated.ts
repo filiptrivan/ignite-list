@@ -1,4 +1,4 @@
-import { BaseEntity, TableFilter, TableFilterContext, TableFilterSortMeta, MimeTypes, Namebook } from 'spiderly';
+import { BaseEntity, Filter, FilterRule, FilterSortMeta, MimeTypes, Namebook } from 'spiderly';
 
 
 
@@ -124,7 +124,7 @@ export class NotificationSaveBody extends BaseEntity
 	selectedRecipientsIds?: number[];
 	unselectedRecipientsIds?: number[];
 	areAllRecipientsSelected?: boolean;
-	recipientsTableFilter?: TableFilter;
+	recipientsTableFilter?: Filter;
 	isMarkedAsRead?: boolean;
 
     constructor(
@@ -140,7 +140,7 @@ export class NotificationSaveBody extends BaseEntity
 		selectedRecipientsIds?: number[];
 		unselectedRecipientsIds?: number[];
 		areAllRecipientsSelected?: boolean;
-		recipientsTableFilter?: TableFilter;
+		recipientsTableFilter?: Filter;
 		isMarkedAsRead?: boolean;     
     } = {}
     ) {
@@ -181,6 +181,7 @@ export class Project extends BaseEntity
 	projectName?: string;
 	link?: string;
 	description?: string;
+	upvoteCount?: number;
 	userDisplayName?: string;
 	userId?: number;
 	version?: number;
@@ -196,6 +197,7 @@ export class Project extends BaseEntity
 		projectName,
 		link,
 		description,
+		upvoteCount,
 		userDisplayName,
 		userId,
 		version,
@@ -209,6 +211,7 @@ export class Project extends BaseEntity
 		projectName?: string;
 		link?: string;
 		description?: string;
+		upvoteCount?: number;
 		userDisplayName?: string;
 		userId?: number;
 		version?: number;
@@ -225,6 +228,7 @@ export class Project extends BaseEntity
 		this.projectName = projectName;
 		this.link = link;
 		this.description = description;
+		this.upvoteCount = upvoteCount;
 		this.userDisplayName = userDisplayName;
 		this.userId = userId;
 		this.version = version;
@@ -412,7 +416,7 @@ export class UpvoteMainUIForm extends BaseEntity
 }
 
 
-export class UserExtended extends BaseEntity
+export class User extends BaseEntity
 {
     email?: string;
 	name?: string;
@@ -450,7 +454,7 @@ export class UserExtended extends BaseEntity
 		modifiedAt?: Date;     
     } = {}
     ) {
-        super('UserExtended'); 
+        super('User'); 
 
         this.email = email;
 		this.name = name;
@@ -466,38 +470,38 @@ export class UserExtended extends BaseEntity
 }
 
 
-export class UserExtendedSaveBody extends BaseEntity
+export class UserSaveBody extends BaseEntity
 {
-    userExtendedDTO?: UserExtended;
+    userDTO?: User;
 
     constructor(
     {
-        userExtendedDTO
+        userDTO
     }:{
-        userExtendedDTO?: UserExtended;     
+        userDTO?: User;     
     } = {}
     ) {
-        super('UserExtendedSaveBody'); 
+        super('UserSaveBody'); 
 
-        this.userExtendedDTO = userExtendedDTO;
+        this.userDTO = userDTO;
     }
 }
 
 
-export class UserExtendedMainUIForm extends BaseEntity
+export class UserMainUIForm extends BaseEntity
 {
-    userExtendedDTO?: UserExtended;
+    userDTO?: User;
 
     constructor(
     {
-        userExtendedDTO
+        userDTO
     }:{
-        userExtendedDTO?: UserExtended;     
+        userDTO?: User;     
     } = {}
     ) {
-        super('UserExtendedMainUIForm'); 
+        super('UserMainUIForm'); 
 
-        this.userExtendedDTO = userExtendedDTO;
+        this.userDTO = userDTO;
     }
 }
 
